@@ -349,17 +349,11 @@ const About = () => {
 };
 
 const Skills = () => {
-  const skills = [
-    { name: 'React.js', level: 95, icon: <Layout className="text-cyan-400" /> },
-    { name: 'Node.js', level: 90, icon: <Server className="text-green-500" /> },
-    { name: 'MongoDB', level: 85, icon: <Database className="text-emerald-600" /> },
-    { name: 'Express.js', level: 88, icon: <Terminal className="text-white" /> },
-    { name: 'Firebase', level: 82, icon: <Cloud className="text-orange-500" /> },
-    { name: 'GitHub', level: 92, icon: <Github className="text-white" /> },
-    { name: 'Git', level: 90, icon: <GitBranch className="text-red-500" /> },
-    { name: 'Figma', level: 85, icon: <Figma className="text-purple-500" /> },
-    { name: 'Canva', level: 80, icon: <PenTool className="text-blue-400" /> },
-  ];
+  const [skills, setSkills] = useState([]);
+
+  useEffect(()=>{
+    fetch('https://portfolio-server-ten-fawn.vercel.app/api/my-skills').then(res=>res.json()).then(data=> setSkills(data));
+  },[])
 
   return (
     <section id="skills" className="py-24 relative overflow-hidden">
@@ -414,39 +408,17 @@ const Skills = () => {
 };
 
 const Projects = () => {
-  const projects = [
-    {
-      title: "E-Commerce Titan",
-      category: "Full Stack MERN",
-      image: "https://picsum.photos/seed/shop/800/600",
-      desc: "A high-performance e-commerce platform with real-time inventory, Stripe integration, and admin dashboard.",
-      tech: ["React", "Node", "MongoDB", "Redux"]
-    },
-    {
-      title: "Social Connect",
-      category: "Real-time App",
-      image: "https://picsum.photos/seed/social/800/600",
-      desc: "Real-time social networking app with instant messaging, post sharing, and notification system using Socket.io.",
-      tech: ["React", "Express", "Socket.io", "Cloudinary"]
-    },
-    {
-      title: "Task Master Pro",
-      category: "Productivity Tool",
-      image: "https://picsum.photos/seed/task/800/600",
-      desc: "Kanban style project management tool with drag-and-drop features and team collaboration workspace.",
-      tech: ["Next.js", "TypeScript", "Prisma", "PostgreSQL"]
-    },
-    {
-      title: "Crypto Pulse",
-      category: "Fintech Dashboard",
-      image: "https://picsum.photos/seed/crypto/800/600",
-      desc: "Live cryptocurrency tracking dashboard with interactive charts and portfolio management.",
-      tech: ["React", "D3.js", "CoinGecko API", "Tailwind"]
-    }
-  ];
+const [projects, setProjects] = useState([]);
+
+useEffect(()=>{
+  fetch('https://portfolio-server-ten-fawn.vercel.app/api/my-projects').then(res=>res.json()).then(data=> setProjects(data));
+},[])
 
 const redirectToGithub = () => {
     window.open("https://github.com/monir-codes", "_blank", "noopener,noreferrer");
+  };
+const redirectToRepo = () => {
+    window.open("https://github.com/monir-codes?tab=repositories", "_blank", "noopener,noreferrer");
   };
 
 
@@ -458,7 +430,7 @@ const redirectToGithub = () => {
             <h2 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight">Featured Work</h2>
             <p className="text-white/50 max-w-xl">A selection of my recent projects where I've pushed the boundaries of web development.</p>
           </div>
-          <button className="px-6 py-3 border border-white/20 rounded-full text-sm font-bold uppercase tracking-widest hover:bg-white/10 transition-colors">
+          <button onClick={redirectToRepo} className="px-6 py-3 border border-white/20 rounded-full text-sm font-bold uppercase tracking-widest hover:bg-white/10 transition-colors">
             View All Projects
           </button>
         </div>
@@ -588,13 +560,13 @@ const Contact = () => {
               </p>
 
               <div className="space-y-6 max-w-sm mx-auto lg:mx-0">
-                <a href="mailto:moniruzzamanrumman@gmail.com" className="flex items-center gap-4 group cursor-pointer">
+                <a href="mailto:monir.webdev@gmail.com" className="flex items-center gap-4 group cursor-pointer">
                   <div className="w-12 h-12 bg-[#00FF00]/10 rounded-2xl flex items-center justify-center text-[#00FF00] group-hover:scale-110 transition-transform">
                     <Mail size={24} />
                   </div>
                   <div>
                     <p className="text-[10px] text-white/40 uppercase font-bold">Email Me</p>
-                    <p className="text-sm sm:text-lg font-medium text-white/90">moniruzzamanrumman@gmail.com</p>
+                    <p className="text-sm sm:text-lg font-medium text-white/90">monir.webdev@gmail.com</p>
                   </div>
                 </a>
               </div>
@@ -664,7 +636,7 @@ const Footer = () => {
     window.open("https://www.linkedin.com/in/moniruzzaman-rumman/", "_blank", "noopener,noreferrer");
   };
   const redirectToMail = ()=>{
-    window.location.href = "mailto:moniruzzamanrumman@gmail.com"
+    window.location.href = "mailto:monir.webdev@gmail.com"
   };
   return (
     <footer className="py-12 border-t border-white/5 relative">
