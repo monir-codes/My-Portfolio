@@ -27,7 +27,10 @@ import {
   Figma,
   GitBranch,
   Cloud,
-  PenTool
+  PenTool,
+  Wind,
+  Zap,
+  Search
 } from 'lucide-react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, Autoplay, EffectCoverflow } from 'swiper/modules';
@@ -349,11 +352,24 @@ const About = () => {
 };
 
 const Skills = () => {
-  const [skills, setSkills] = useState([]);
-
-  useEffect(()=>{
-    fetch('https://portfolio-server-ten-fawn.vercel.app/api/my-skills').then(res=>res.json()).then(data=> setSkills(data));
-  },[])
+  const skills = [
+    { name: 'React.js', level: 95, icon: <Layout className="text-cyan-400" /> },
+    { name: 'Node.js', level: 90, icon: <Server className="text-green-500" /> },
+    { name: 'MongoDB', level: 95, icon: <Database className="text-emerald-600" /> },
+    { name: 'Express.js', level: 88, icon: <Terminal className="text-white" /> },
+    { name: 'TypeScript', level: 85, icon: <Code2 className="text-blue-500" /> },
+    { name: 'Tailwind', level: 98, icon: <Wind className="text-sky-400" /> },
+    { name: 'Framer', level: 90, icon: <Zap className="text-purple-400" /> },
+    { name: 'Swiper', level: 92, icon: <Layers className="text-indigo-500" /> },
+    { name: 'Firebase', level: 89, icon: <Cloud className="text-orange-500" /> },
+    { name: 'GitHub', level: 92, icon: <Github className="text-white" /> },
+    { name: 'Git', level: 90, icon: <GitBranch className="text-red-500" /> },
+    { name: 'WordPress', level: 63, icon: <Globe className="text-blue-600" /> },
+    { name: 'SEO', level: 80, icon: <Search className="text-yellow-500" /> },
+    { name: 'AI', level: 92, icon: <Cpu className="text-pink-500" /> },
+    { name: 'Figma', level: 85, icon: <Figma className="text-purple-500" /> },
+    { name: 'Canva', level: 80, icon: <PenTool className="text-blue-400" /> },
+  ];
 
   return (
     <section id="skills" className="py-24 relative overflow-hidden">
