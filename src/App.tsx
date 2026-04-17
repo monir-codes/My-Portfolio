@@ -491,10 +491,10 @@ const redirectToRepo = () => {
                       <h3 className="text-2xl font-bold">{project.title}</h3>
                     </div>
                     <div className="flex gap-2">
-                      <button onClick={()=> redirectToGithub()} className="p-2 bg-white/10 rounded-full hover:bg-[#00FF00] hover:text-black transition-colors">
+                      <button onClick={() => window.open(project.live, "_blank", "noopener,noreferrer")} className="p-2 bg-white/10 rounded-full hover:bg-[#00FF00] hover:text-black transition-colors">
                         <Github size={20} />
                       </button>
-                      <button className="p-2 bg-white/10 rounded-full hover:bg-[#00FF00] hover:text-black transition-colors">
+                      <button onClick={() => window.open(project.repo, "_blank", "noopener,noreferrer")} className="p-2 bg-white/10 rounded-full hover:bg-[#00FF00] hover:text-black transition-colors">
                         <ExternalLink size={20} />
                       </button>
                     </div>
