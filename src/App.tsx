@@ -949,13 +949,13 @@ const Projects = () => {
               <div className="hidden md:flex p-8 border-t border-white/5 mt-auto bg-[#111] shrink-0">
                 <div className="flex flex-col gap-3 w-full">
                   <button
-                    onClick={() => window.open(selectedProject.live, "_blank")}
+                    onClick={() => window.open(selectedProject.repo, "_blank")}
                     className="w-full flex justify-center items-center gap-3 py-4 bg-[#00FF00] text-black font-bold rounded-xl hover:brightness-90 transition-all active:scale-[0.98]"
                   >
                     <ExternalLink size={18} /> Live Demo
                   </button>
                   <button
-                    onClick={() => window.open(selectedProject.repo, "_blank")}
+                    onClick={() => window.open(selectedProject.live, "_blank")}
                     className="w-full flex justify-center items-center gap-3 py-4 bg-white/5 border border-white/10 font-bold rounded-xl hover:bg-white/10 transition-all active:scale-[0.98]"
                   >
                     <Github size={18} /> Source Code
