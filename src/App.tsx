@@ -37,7 +37,13 @@ import {
   Wind,
   Zap,
   Search,
+  Download,
+  Box,
+  Webhook,
+  Rocket,
 } from "lucide-react";
+import { FaFacebook } from "react-icons/fa";
+
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, Autoplay, EffectCoverflow } from "swiper/modules";
 import { useInView } from "react-intersection-observer";
@@ -81,28 +87,32 @@ const Navbar = () => {
     { name: "Home", href: "#home" },
     { name: "About", href: "#about" },
     { name: "Skills", href: "#skills" },
+    { name: "Experience", href: "#experience" },
     { name: "Projects", href: "#projects" },
     { name: "Contact", href: "#contact" },
   ];
 
-  // Smooth Scroll Function
-  const handleMobileClick = (e, href) => {
-    e.preventDefault();
-    setIsMobileMenuOpen(false); // Menu bondho hobe
+  // ✅ Unified smooth scroll function
+const handleScroll = (e, href) => {
+  e.preventDefault();
 
-    const targetId = href.replace("#", "");
-    const elem = document.getElementById(targetId);
+  const id = href.replace("#", "");
 
-    if (elem) {
-      // Alpo somoy wait kora bhalo jno menu close animation shuru hote pare
-      setTimeout(() => {
-        elem.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        });
-      }, 300);
+  // 👇 close menu first
+  setIsMobileMenuOpen(false);
+
+  // 👇 wait for DOM update + animation settle
+  setTimeout(() => {
+    const element = document.getElementById(id);
+
+    if (element) {
+      element.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
     }
-  };
+  }, 150);
+};
 
   return (
     <nav
@@ -110,10 +120,12 @@ const Navbar = () => {
         "fixed top-0 left-0 w-full z-50 transition-all duration-300 px-6 py-4",
         isScrolled
           ? "bg-black/80 backdrop-blur-md border-b border-white/10"
-          : "bg-transparent",
+          : "bg-transparent"
       )}
     >
       <div className="max-w-7xl mx-auto flex justify-between items-center">
+        
+        {/* Logo */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
@@ -128,6 +140,7 @@ const Navbar = () => {
             <motion.a
               key={link.name}
               href={link.href}
+              onClick={(e) => handleScroll(e, link.href)}
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.1 }}
@@ -161,7 +174,7 @@ const Navbar = () => {
                 <a
                   key={link.name}
                   href={link.href}
-                  onClick={(e) => handleMobileClick(e, link.href)} // Function call add kora hoyeche
+                  onClick={(e) => handleScroll(e, link.href)}
                   className="text-lg font-medium hover:text-[#00FF00] transition-colors"
                 >
                   {link.name}
@@ -194,8 +207,20 @@ const Hero = () => {
     );
   };
 
+  const redirectToFB = () => {
+    window.open(
+      "https://www.facebook.com/mdrumman.mondal",
+      "_blank",
+      "noopener,noreferrer",
+    );
+  };
+
   const redirectToMail = () => {
     window.location.href = "mailto:moniruzzamanrumman@gmail.com";
+  };
+
+  const redirectToResume = () => {
+    // window.open("/resume.pdf", "_blank", "noopener,noreferrer");
   };
 
   return (
@@ -237,39 +262,62 @@ const Hero = () => {
             . I build high-performance web applications with modern architecture
             and exceptional user interfaces.
           </p>
+          <div className="flex flex-col gap-5 justify-center lg:justify-start">
+            {/* Top Buttons */}
+            <div className="flex flex-col sm:flex-row gap-5">
+              <motion.button
+                whileHover={{
+                  scale: 1.05,
+                  boxShadow: "0 0 40px rgba(0,255,0,0.4)",
+                }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() =>
+                  window.open(
+                    "https://github.com/monir-codes?tab=repositories",
+                    "_blank",
+                    "noopener,noreferrer",
+                  )
+                }
+                className="flex-1 px-10 py-4 bg-[#00FF00] text-black font-bold uppercase tracking-widest rounded-xl flex items-center justify-center gap-2 transition-shadow"
+              >
+                View Projects
+                <ChevronRight size={18} />
+              </motion.button>
 
-          <div className="flex flex-col sm:flex-row gap-5 justify-center lg:justify-start">
+              <motion.button
+                whileHover={{
+                  scale: 1.05,
+                  backgroundColor: "rgba(255,255,255,0.1)",
+                }}
+                whileTap={{ scale: 0.95 }}
+                onClick={redirectToMail}
+                className="flex-1 px-10 py-4 border border-white/20 font-bold uppercase tracking-widest rounded-xl flex items-center justify-center backdrop-blur-md"
+              >
+                Contact Me
+              </motion.button>
+            </div>
+
+            {/* Resume Button */}
             <motion.button
               whileHover={{
-                scale: 1.05,
-                boxShadow: "0 0 40px rgba(0,255,0,0.4)",
+                scale: 1.02,
+                boxShadow: "0 0 30px rgba(0,255,0,0.25)",
               }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() =>
-                window.open(
-                  "https://github.com/monir-codes?tab=repositories",
-                  "_blank",
-                  "noopener,noreferrer",
-                )
-              }
-              className="px-10 py-4 bg-[#00FF00] text-black font-bold uppercase tracking-widest rounded-xl flex items-center justify-center gap-2 transition-shadow"
+              whileTap={{ scale: 0.98 }}
+              onClick={redirectToResume}
+              className="w-full px-10 py-4 border border-[#00FF00]/30 text-[#00FF00] font-bold uppercase tracking-widest rounded-xl flex items-center justify-center gap-3 backdrop-blur-md hover:bg-[#00FF00]/10 transition-all"
             >
-              View Projects <ChevronRight size={18} />
-            </motion.button>
-            <motion.button
-              whileHover={{
-                scale: 1.05,
-                backgroundColor: "rgba(255,255,255,0.1)",
-              }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => redirectToMail()}
-              className="px-10 py-4 border border-white/20 font-bold uppercase tracking-widest rounded-xl flex items-center justify-center backdrop-blur-md"
-            >
-              Contact Me
+              <Download size={20} />
+              Download Resume
             </motion.button>
           </div>
 
           <div className="mt-14 flex gap-8 text-white/40 justify-center lg:justify-start">
+            <FaFacebook
+              size={22}
+              onClick={() => redirectToFB()}
+              className="hover:text-[#00FF00] cursor-pointer transition-all hover:scale-110"
+            />
             <Github
               onClick={() => redirectToGithub()}
               className="hover:text-[#00FF00] cursor-pointer transition-all hover:scale-110"
@@ -288,7 +336,7 @@ const Hero = () => {
           style={{ y }}
           className="relative order-1 lg:order-2 mb-12 lg:mb-0"
         >
-          <div className="relative w-full aspect-square max-w-[280px] sm:max-w-md mx-auto">
+          <div className="relative w-full aspect-square max-w-[320px] sm:max-w-[420px] md:max-w-[520px] mx-auto">
             {/* Profile Picture Placeholder */}
             <div className="absolute inset-0 border-2 border-[#00FF00]/20 rounded-full rotate-6 animate-float" />
             <div className="absolute inset-0 border-2 border-white/10 rounded-full -rotate-3 animate-float delay-700" />
@@ -296,7 +344,7 @@ const Hero = () => {
               <img
                 src="https://i.postimg.cc/fLZwBwzf/Picsart-26-01-27-17-04-44-604.jpg"
                 alt="MD. Moniruzzaman"
-                className="w-full h-full object-cover opacity-80 grayscale hover:grayscale-0 transition-all duration-700"
+                className="w-full h-full object-cover opacity-80  transition-all duration-700"
                 referrerPolicy="no-referrer"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
@@ -334,94 +382,130 @@ const Hero = () => {
 const About = () => {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.2 });
 
+  const features = [
+    {
+      icon: <Terminal />,
+      title: "System Architecture",
+      desc: "Clean, modular & scalable code structure",
+    },
+    {
+      icon: <Cpu />,
+      title: "Performance Engineering",
+      desc: "Optimized React & Next.js applications",
+    },
+    {
+      icon: <Layers />,
+      title: "Backend Scalability",
+      desc: "Node.js + MongoDB production systems",
+    },
+    {
+      icon: <Globe />,
+      title: "UI/UX Engineering",
+      desc: "Modern, responsive & accessible interfaces",
+    },
+  ];
+
   return (
-    <section id="about" className="py-24 relative" ref={ref}>
+    <section id="about" className="py-28 relative" ref={ref}>
       <div className="container mx-auto px-6">
-        <div className="grid md:grid-cols-2 gap-16 items-center">
+
+        <div className="grid md:grid-cols-2 gap-20 items-center">
+
+          {/* LEFT */}
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
+            initial={{ opacity: 0, x: -40 }}
             animate={inView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.7 }}
           >
-            <h2 className="text-4xl md:text-5xl font-bold mb-8 tracking-tight">
-              Crafting Digital <br />
-              <span className="italic font-display text-[#00FF00] text-shadow-glow">
-                Experiences
+            <h2 className="text-4xl md:text-5xl font-bold leading-tight mb-6 tracking-tight">
+              Building Modern <br />
+              <span className="italic font-display text-[#00FF00]">
+                Web Experiences
               </span>
             </h2>
-            <div className="space-y-6 text-white/70 text-lg leading-relaxed">
+
+            <p className="text-white/50 text-lg mb-8 leading-relaxed">
+              Full-stack developer specializing in Next.js, React, and the MERN stack,
+              focused on building scalable, production-ready web applications with modern
+              UI/UX, clean architecture, and performance optimization.
+            </p>
+
+            <div className="space-y-6 text-white/60 text-lg leading-relaxed">
               <p>
-                Hello! I'm{" "}
-                <span className="text-white font-bold">MD. Moniruzzaman</span>,
-                a dedicated MERN Stack Developer with a passion for building
-                robust and user-centric web applications. With expertise in
-                MongoDB, Express.js, React, and Node.js, I bridge the gap
-                between complex backend logic and intuitive frontend design.
+                I specialize in building full-stack web applications using
+                modern JavaScript frameworks. My focus is on creating fast,
+                scalable, and user-friendly digital experiences.
               </p>
+
               <p>
-                My journey in tech is driven by a constant desire to learn and
-                implement the latest industry standards. I don't just write
-                code; I architect solutions that solve real-world problems and
-                provide seamless user experiences.
+                Outside coding, I enjoy exploring new technologies, improving UI
+                design systems, and learning system design principles for real-world applications.
               </p>
             </div>
 
-            <div className="grid grid-cols-2 gap-8 mt-12">
+            {/* STATS */}
+            <div className="grid grid-cols-2 gap-10 mt-12">
               <div>
                 <h4 className="text-4xl font-bold text-[#00FF00]">
                   {inView && <CountUp end={3} duration={2} />}+
                 </h4>
-                <p className="text-sm text-white/50 uppercase tracking-widest">
+                <p className="text-sm text-white/40 uppercase tracking-widest mt-2">
                   Years Experience
                 </p>
               </div>
+
               <div>
                 <h4 className="text-4xl font-bold text-[#00FF00]">
                   {inView && <CountUp end={50} duration={2} />}+
                 </h4>
-                <p className="text-sm text-white/50 uppercase tracking-widest">
-                  Projects Completed
+                <p className="text-sm text-white/40 uppercase tracking-widest mt-2">
+                  Projects Delivered
                 </p>
               </div>
             </div>
           </motion.div>
 
+          {/* RIGHT */}
           <motion.div
-            initial={{ opacity: 0, x: 30 }}
+            initial={{ opacity: 0, x: 40 }}
             animate={inView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="grid grid-cols-1 sm:grid-cols-2 gap-4"
+            transition={{ duration: 0.7, delay: 0.2 }}
+            className="grid grid-cols-1 sm:grid-cols-2 gap-5"
           >
-            {[
-              {
-                icon: <Terminal />,
-                title: "Clean Code",
-                desc: "Maintainable & readable",
-              },
-              { icon: <Cpu />, title: "Performance", desc: "Optimized speed" },
-              {
-                icon: <Layers />,
-                title: "Scalability",
-                desc: "Built for growth",
-              },
-              {
-                icon: <Globe />,
-                title: "SEO Friendly",
-                desc: "Search optimized",
-              },
-            ].map((item, i) => (
+            {features.map((item, i) => (
               <div
                 key={i}
-                className="p-6 md:p-8 bg-black/40 backdrop-blur-sm border border-white/5 rounded-2xl hover:border-[#00FF00]/30 transition-all group"
+                className="group relative p-6 md:p-7 rounded-2xl
+                bg-white/5 backdrop-blur-xl border border-white/10
+                overflow-hidden transition-all duration-300
+                hover:-translate-y-2 hover:scale-[1.03]
+                hover:border-[#00FF00]/40
+                hover:shadow-lg hover:shadow-[#00FF00]/10"
               >
-                <div className="text-[#00FF00] mb-4 group-hover:scale-110 transition-transform">
-                  {item.icon}
+                {/* glow effect */}
+                <div className="absolute inset-0 bg-gradient-to-br from-[#00FF00]/10 to-transparent opacity-0 group-hover:opacity-100 transition" />
+
+                <div className="relative z-10 flex flex-col gap-4">
+
+                  <div className="w-11 h-11 flex items-center justify-center rounded-xl
+                  bg-[#00FF00]/10 text-[#00FF00] group-hover:scale-110 transition">
+                    {item.icon}
+                  </div>
+
+                  <div>
+                    <h4 className="font-semibold text-white mb-2 tracking-wide">
+                      {item.title}
+                    </h4>
+                    <p className="text-sm text-white/40 leading-relaxed">
+                      {item.desc}
+                    </p>
+                  </div>
+
                 </div>
-                <h4 className="font-bold mb-2">{item.title}</h4>
-                <p className="text-sm text-white/40">{item.desc}</p>
               </div>
             ))}
           </motion.div>
+
         </div>
       </div>
     </section>
@@ -430,52 +514,114 @@ const About = () => {
 
 const Skills = () => {
   const skills = [
-    { name: "React.js", level: 95, icon: <Layout className="text-cyan-400" /> },
-    { name: "Node.js", level: 90, icon: <Server className="text-green-500" /> },
     {
-      name: "MongoDB",
+      name: "JavaScript",
       level: 95,
-      icon: <Database className="text-emerald-600" />,
+      icon: <Code2 className="text-yellow-400" />,
+      category: "Frontend",
+    },
+    {
+      name: "TypeScript",
+      level: 90,
+      icon: <Code2 className="text-blue-500" />,
+      category: "Frontend",
+    },
+    {
+      name: "React.js",
+      level: 95,
+      icon: <Layout className="text-cyan-400" />,
+      category: "Frontend",
+    },
+    {
+      name: "Next.js",
+      level: 90,
+      icon: <Box className="text-white" />,
+      category: "Frontend",
+    },
+
+    {
+      name: "Node.js",
+      level: 90,
+      icon: <Server className="text-green-500" />,
+      category: "Backend",
     },
     {
       name: "Express.js",
       level: 88,
       icon: <Terminal className="text-white" />,
+      category: "Backend",
     },
     {
-      name: "TypeScript",
-      level: 85,
-      icon: <Code2 className="text-blue-500" />,
+      name: "MongoDB",
+      level: 95,
+      icon: <Database className="text-emerald-600" />,
+      category: "Backend",
     },
-    { name: "Tailwind", level: 98, icon: <Wind className="text-sky-400" /> },
-    { name: "Framer", level: 90, icon: <Zap className="text-purple-400" /> },
-    { name: "Swiper", level: 92, icon: <Layers className="text-indigo-500" /> },
     {
       name: "Firebase",
       level: 89,
       icon: <Cloud className="text-orange-500" />,
+      category: "Backend",
     },
-    { name: "GitHub", level: 92, icon: <Github className="text-white" /> },
-    { name: "Git", level: 90, icon: <GitBranch className="text-red-500" /> },
-    { name: "WordPress", level: 63, icon: <Globe className="text-blue-600" /> },
-    { name: "SEO", level: 80, icon: <Search className="text-yellow-500" /> },
-    { name: "AI", level: 92, icon: <Cpu className="text-pink-500" /> },
-    { name: "Figma", level: 85, icon: <Figma className="text-purple-500" /> },
-    { name: "Canva", level: 80, icon: <PenTool className="text-blue-400" /> },
+
+    {
+      name: "Tailwind CSS",
+      level: 98,
+      icon: <Wind className="text-sky-400" />,
+      category: "Frontend",
+    },
+    {
+      name: "Framer Motion",
+      level: 90,
+      icon: <Zap className="text-purple-400" />,
+      category: "Frontend",
+    },
+
+    {
+      name: "REST API",
+      level: 88,
+      icon: <Webhook className="text-indigo-400" />,
+      category: "Backend",
+    },
+
+    { name: "Git", level: 90, icon: <GitBranch className="text-red-500" />, category: "Tools" },
+    { name: "GitHub", level: 92, icon: <Github className="text-white" />, category: "Tools" },
+
+    { name: "Figma", level: 85, icon: <Figma className="text-purple-500" />, category: "Design" },
+    { name: "Vercel", level: 90, icon: <Rocket className="text-white" />, category: "Tools" },
+
+    { name: "AI Tools", level: 92, icon: <Cpu className="text-pink-500" />, category: "Tools" },
   ];
+
+  const categories = ["Frontend", "Backend", "Tools", "Design"];
 
   return (
     <section id="skills" className="py-24 relative overflow-hidden">
       <div className="container mx-auto px-6">
+
+        {/* HEADER */}
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
             Technical Arsenal
           </h2>
           <p className="text-white/50 max-w-2xl mx-auto">
-            The technologies I use to bring ideas to life.
+            Technologies I use to build scalable, modern web applications
           </p>
         </div>
 
+        {/* CATEGORY BADGES (NEW 🔥) */}
+        <div className="flex flex-wrap justify-center gap-3 mb-10">
+          {categories.map((cat) => (
+            <span
+              key={cat}
+              className="px-4 py-1 text-xs uppercase tracking-widest border border-white/10 rounded-full text-white/50"
+            >
+              {cat}
+            </span>
+          ))}
+        </div>
+
+        {/* GRID */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
           {skills.map((skill, i) => (
             <motion.div
@@ -484,38 +630,116 @@ const Skills = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.05 }}
-              className="p-6 md:p-8 bg-white/5 backdrop-blur-md border border-white/10 rounded-3xl relative group overflow-hidden hover:bg-[#00FF00]/5 transition-colors"
+              className="group relative p-6 md:p-8 rounded-3xl bg-white/5 backdrop-blur-md border border-white/10 overflow-hidden hover:border-[#00FF00]/30 hover:shadow-lg hover:shadow-[#00FF00]/10 transition-all"
             >
-              <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
-                {React.cloneElement(skill.icon as React.ReactElement, {
-                  size: 80,
-                })}
+              {/* glow background */}
+              <div className="absolute inset-0 bg-gradient-to-br from-[#00FF00]/10 to-transparent opacity-0 group-hover:opacity-100 transition" />
+
+              {/* BIG ICON BACKGROUND */}
+              <div className="absolute top-4 right-4 opacity-10 group-hover:opacity-20 transition">
+                {React.cloneElement(skill.icon, { size: 70 })}
               </div>
 
-              <div className="flex items-center gap-4 mb-6">
-                <div className="p-3 bg-black rounded-xl border border-white/10">
-                  {skill.icon}
+              <div className="relative z-10">
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="p-3 bg-black rounded-xl border border-white/10 group-hover:scale-110 transition">
+                    {skill.icon}
+                  </div>
+                  <h3 className="text-lg font-bold">{skill.name}</h3>
                 </div>
-                <h3 className="text-xl font-bold">{skill.name}</h3>
-              </div>
 
-              <div className="space-y-2">
-                <div className="flex justify-between text-sm">
-                  <span className="text-white/50">Proficiency</span>
-                  <span className="text-[#00FF00]">{skill.level}%</span>
-                </div>
-                <div className="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
-                  <motion.div
-                    initial={{ width: 0 }}
-                    whileInView={{ width: `${skill.level}%` }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 1, delay: 0.5 }}
-                    className="h-full bg-gradient-to-r from-[#00FF00] to-emerald-400"
-                  />
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span className="text-white/40">Proficiency</span>
+                    <span className="text-[#00FF00]">{skill.level}%</span>
+                  </div>
+
+                  <div className="h-2 w-full bg-white/10 rounded-full overflow-hidden">
+                    <motion.div
+                      initial={{ width: 0 }}
+                      whileInView={{ width: `${skill.level}%` }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 1 }}
+                      className="h-full bg-gradient-to-r from-[#00FF00] to-emerald-400"
+                    />
+                  </div>
                 </div>
               </div>
             </motion.div>
           ))}
+        </div>
+
+      </div>
+    </section>
+  );
+};
+
+const Experience = () => {
+  const experiences = [
+    {
+      role: "Full Stack Developer",
+      company: "Freelance / Remote Work",
+      duration: "2024 - Present",
+      desc: "Developing full-stack MERN applications including dashboards, portfolio systems, and scalable web apps with authentication, APIs, and modern UI/UX.",
+      tech: ["Next.js", "React", "Node.js", "MongoDB", "Tailwind"],
+    },
+    {
+      role: "Frontend Developer",
+      company: "Personal & Practice Projects",
+      duration: "2023 - 2024",
+      desc: "Built responsive UI components, animation-rich interfaces, and reusable design systems using React and Tailwind CSS.",
+      tech: ["React", "Tailwind", "Framer Motion"],
+    },
+  ];
+
+  return (
+    <section id="experience" className="py-28 relative">
+      <div className="container mx-auto px-6">
+
+        <div className="text-center mb-16">
+          <h2 className="text-4xl md:text-5xl font-bold mb-4">
+            Experience
+          </h2>
+          <p className="text-white/50 max-w-2xl mx-auto">
+            My professional journey and hands-on development experience
+          </p>
+        </div>
+
+        <div className="relative border-l border-white/10 ml-4 md:ml-10 space-y-10">
+
+          {experiences.map((exp, i) => (
+            <div key={i} className="relative pl-8">
+
+              <div className="absolute -left-[9px] top-2 w-4 h-4 rounded-full bg-[#00FF00] shadow-[0_0_15px_rgba(0,255,0,0.7)]" />
+
+              <div className="p-6 md:p-8 rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 hover:border-[#00FF00]/30 transition-all">
+
+                <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-2">
+                  <h3 className="text-xl font-bold text-white">{exp.role}</h3>
+                  <span className="text-sm text-[#00FF00]">{exp.duration}</span>
+                </div>
+
+                <p className="text-white/60 mb-4">{exp.company}</p>
+
+                <p className="text-white/40 leading-relaxed mb-5">
+                  {exp.desc}
+                </p>
+
+                <div className="flex flex-wrap gap-2">
+                  {exp.tech.map((t, idx) => (
+                    <span
+                      key={idx}
+                      className="px-3 py-1 text-[10px] uppercase tracking-widest rounded-full border border-white/10 text-white/40"
+                    >
+                      {t}
+                    </span>
+                  ))}
+                </div>
+
+              </div>
+            </div>
+          ))}
+
         </div>
       </div>
     </section>
@@ -1083,6 +1307,7 @@ export default function App() {
         <Hero />
         <About />
         <Skills />
+        <Experience />
         <Projects />
         <Contact />
       </main>
