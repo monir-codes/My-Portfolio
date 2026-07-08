@@ -93,38 +93,37 @@ const Navbar = () => {
   ];
 
   // ✅ Unified smooth scroll function
-const handleScroll = (e, href) => {
-  e.preventDefault();
+  const handleScroll = (e, href) => {
+    e.preventDefault();
 
-  const id = href.replace("#", "");
+    const id = href.replace("#", "");
 
-  // 👇 close menu first
-  setIsMobileMenuOpen(false);
+    // 👇 close menu first
+    setIsMobileMenuOpen(false);
 
-  // 👇 wait for DOM update + animation settle
-  setTimeout(() => {
-    const element = document.getElementById(id);
+    // 👇 wait for DOM update + animation settle
+    setTimeout(() => {
+      const element = document.getElementById(id);
 
-    if (element) {
-      element.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }
-  }, 150);
-};
+      if (element) {
+        element.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }
+    }, 150);
+  };
 
   return (
     <nav
       className={cn(
-        "fixed top-0 left-0 w-full z-50 transition-all duration-300 px-6 py-4",
+        "fixed top-0 left-0 w-full z-50 transition-all duration-300 py-4",
         isScrolled
           ? "bg-black/80 backdrop-blur-md border-b border-white/10"
-          : "bg-transparent"
+          : "bg-transparent",
       )}
     >
-      <div className="max-w-7xl mx-auto flex justify-between items-center">
-        
+      <div className="container mx-auto px-8 md:px-16 lg:px-24 xl:px-32 flex justify-between items-center">
         {/* Logo */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}
@@ -228,7 +227,7 @@ const Hero = () => {
       id="home"
       className="relative min-h-screen flex items-center justify-center overflow-hidden pt-24 pb-12"
     >
-      <div className="container mx-auto px-6 relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+      <div className="container mx-auto px-8 md:px-16 lg:px-24 xl:px-32 relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -407,10 +406,8 @@ const About = () => {
 
   return (
     <section id="about" className="py-28 relative" ref={ref}>
-      <div className="container mx-auto px-6">
-
+      <div className="container mx-auto px-8 md:px-16 lg:px-24 xl:px-32">
         <div className="grid md:grid-cols-2 gap-20 items-center">
-
           {/* LEFT */}
           <motion.div
             initial={{ opacity: 0, x: -40 }}
@@ -425,9 +422,10 @@ const About = () => {
             </h2>
 
             <p className="text-white/50 text-lg mb-8 leading-relaxed">
-              Full-stack developer specializing in Next.js, React, and the MERN stack,
-              focused on building scalable, production-ready web applications with modern
-              UI/UX, clean architecture, and performance optimization.
+              Full-stack developer specializing in Next.js, React, and the MERN
+              stack, focused on building scalable, production-ready web
+              applications with modern UI/UX, clean architecture, and
+              performance optimization.
             </p>
 
             <div className="space-y-6 text-white/60 text-lg leading-relaxed">
@@ -439,7 +437,8 @@ const About = () => {
 
               <p>
                 Outside coding, I enjoy exploring new technologies, improving UI
-                design systems, and learning system design principles for real-world applications.
+                design systems, and learning system design principles for
+                real-world applications.
               </p>
             </div>
 
@@ -486,9 +485,10 @@ const About = () => {
                 <div className="absolute inset-0 bg-gradient-to-br from-[#00FF00]/10 to-transparent opacity-0 group-hover:opacity-100 transition" />
 
                 <div className="relative z-10 flex flex-col gap-4">
-
-                  <div className="w-11 h-11 flex items-center justify-center rounded-xl
-                  bg-[#00FF00]/10 text-[#00FF00] group-hover:scale-110 transition">
+                  <div
+                    className="w-11 h-11 flex items-center justify-center rounded-xl
+                  bg-[#00FF00]/10 text-[#00FF00] group-hover:scale-110 transition"
+                  >
                     {item.icon}
                   </div>
 
@@ -500,12 +500,10 @@ const About = () => {
                       {item.desc}
                     </p>
                   </div>
-
                 </div>
               </div>
             ))}
           </motion.div>
-
         </div>
       </div>
     </section>
@@ -584,21 +582,45 @@ const Skills = () => {
       category: "Backend",
     },
 
-    { name: "Git", level: 90, icon: <GitBranch className="text-red-500" />, category: "Tools" },
-    { name: "GitHub", level: 92, icon: <Github className="text-white" />, category: "Tools" },
+    {
+      name: "Git",
+      level: 90,
+      icon: <GitBranch className="text-red-500" />,
+      category: "Tools",
+    },
+    {
+      name: "GitHub",
+      level: 92,
+      icon: <Github className="text-white" />,
+      category: "Tools",
+    },
 
-    { name: "Figma", level: 85, icon: <Figma className="text-purple-500" />, category: "Design" },
-    { name: "Vercel", level: 90, icon: <Rocket className="text-white" />, category: "Tools" },
+    {
+      name: "Figma",
+      level: 85,
+      icon: <Figma className="text-purple-500" />,
+      category: "Design",
+    },
+    {
+      name: "Vercel",
+      level: 90,
+      icon: <Rocket className="text-white" />,
+      category: "Tools",
+    },
 
-    { name: "AI Tools", level: 92, icon: <Cpu className="text-pink-500" />, category: "Tools" },
+    {
+      name: "AI Tools",
+      level: 92,
+      icon: <Cpu className="text-pink-500" />,
+      category: "Tools",
+    },
   ];
 
   const categories = ["Frontend", "Backend", "Tools", "Design"];
 
   return (
     <section id="skills" className="py-24 relative overflow-hidden">
-      <div className="container mx-auto px-6">
-
+      <div className="container mx-auto px-8 md:px-16 lg:px-24 xl:px-32">
         {/* HEADER */}
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
@@ -668,7 +690,6 @@ const Skills = () => {
             </motion.div>
           ))}
         </div>
-
       </div>
     </section>
   );
@@ -694,26 +715,27 @@ const Experience = () => {
 
   return (
     <section id="experience" className="py-28 relative">
-      <div className="container mx-auto px-6">
-
+      <div className="container mx-auto px-8 md:px-16 lg:px-24 xl:px-32">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            Experience
-          </h2>
+          <h2 className="text-4xl md:text-5xl font-bold mb-4">Experience</h2>
           <p className="text-white/50 max-w-2xl mx-auto">
             My professional journey and hands-on development experience
           </p>
         </div>
 
         <div className="relative border-l border-white/10 ml-4 md:ml-10 space-y-10">
-
           {experiences.map((exp, i) => (
-            <div key={i} className="relative pl-8">
-
+            <motion.div 
+              key={i} 
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.2, duration: 0.5 }}
+              className="relative pl-8"
+            >
               <div className="absolute -left-[9px] top-2 w-4 h-4 rounded-full bg-[#00FF00] shadow-[0_0_15px_rgba(0,255,0,0.7)]" />
 
               <div className="p-6 md:p-8 rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 hover:border-[#00FF00]/30 transition-all">
-
                 <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-2">
                   <h3 className="text-xl font-bold text-white">{exp.role}</h3>
                   <span className="text-sm text-[#00FF00]">{exp.duration}</span>
@@ -721,9 +743,7 @@ const Experience = () => {
 
                 <p className="text-white/60 mb-4">{exp.company}</p>
 
-                <p className="text-white/40 leading-relaxed mb-5">
-                  {exp.desc}
-                </p>
+                <p className="text-white/40 leading-relaxed mb-5">{exp.desc}</p>
 
                 <div className="flex flex-wrap gap-2">
                   {exp.tech.map((t, idx) => (
@@ -735,11 +755,9 @@ const Experience = () => {
                     </span>
                   ))}
                 </div>
-
               </div>
-            </div>
+            </motion.div>
           ))}
-
         </div>
       </div>
     </section>
@@ -778,7 +796,7 @@ const Projects = () => {
 
   return (
     <section id="projects" className="py-24 relative text-white">
-      <div className="container mx-auto px-6">
+      <div className="container mx-auto px-8 md:px-16 lg:px-24 xl:px-32">
         {/* Header Section */}
         <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
           <div>
@@ -801,10 +819,14 @@ const Projects = () => {
         {/* Swiper Section */}
         <Swiper
           modules={[Pagination, Autoplay, EffectCoverflow]}
-          effect={"coverflow"}
-          grabCursor={true}
+          effect="coverflow"
+          grabCursor={false}
+          preventClicks={false}
+          preventClicksPropagation={false}
           centeredSlides={true}
           slidesPerView={1}
+          speed={800}
+          watchSlidesProgress={true}
           breakpoints={{
             640: { slidesPerView: 1.5 },
             1024: { slidesPerView: 2 },
@@ -813,19 +835,20 @@ const Projects = () => {
           coverflowEffect={{
             rotate: 30,
             stretch: 0,
-            depth: 100,
+            depth: 120,
             modifier: 1,
-            slideShadows: true,
+            slideShadows: false,
           }}
+          spaceBetween={40}
           pagination={{ clickable: true }}
-          autoplay={{ delay: 4000, disableOnInteraction: false }}
+          autoplay={{ delay: 3000, disableOnInteraction: false }}
           className="pb-20"
         >
           {projects.map((project, i) => (
-            <SwiperSlide key={i} className="max-w-3xl">
+            <SwiperSlide key={i} className="max-w-3xl h-auto">
               <div
                 onClick={() => setSelectedProject(project)} // Open Modal on Click
-                className="group cursor-pointer relative bg-white/5 backdrop-blur-md rounded-3xl overflow-hidden border border-white/10 transition-all hover:border-white/20"
+                className="group h-full flex flex-col cursor-pointer relative bg-white/5 backdrop-blur-md rounded-3xl overflow-hidden border border-white/10 transition-all hover:border-white/20"
               >
                 <div className="aspect-video overflow-hidden">
                   <img
@@ -835,7 +858,7 @@ const Projects = () => {
                     referrerPolicy="no-referrer"
                   />
                 </div>
-                <div className="p-8">
+                <div className="p-8 flex-1 flex flex-col">
                   <div className="flex justify-between items-start mb-4">
                     <div className="flex-1 min-w-0 mr-4">
                       <span className="text-[#00FF00] text-xs font-bold uppercase tracking-widest mb-2 block">
@@ -847,6 +870,7 @@ const Projects = () => {
                     </div>
                     <div className="flex gap-2 shrink-0">
                       <button
+                        onPointerDown={(e) => e.stopPropagation()}
                         onClick={(e) => {
                           e.stopPropagation();
                           window.open(
@@ -855,11 +879,12 @@ const Projects = () => {
                             "noopener,noreferrer",
                           );
                         }}
-                        className="p-2 bg-white/10 rounded-full hover:bg-[#00FF00] hover:text-black transition-colors"
+                        className="p-2 bg-white/10 rounded-full hover:bg-[#00FF00] hover:text-black transition-colors swiper-no-swiping cursor-pointer"
                       >
                         <Github size={20} />
                       </button>
                       <button
+                        onPointerDown={(e) => e.stopPropagation()}
                         onClick={(e) => {
                           e.stopPropagation();
                           window.open(
@@ -868,7 +893,7 @@ const Projects = () => {
                             "noopener,noreferrer",
                           );
                         }}
-                        className="p-2 bg-white/10 rounded-full hover:bg-[#00FF00] hover:text-black transition-colors"
+                        className="p-2 bg-white/10 rounded-full hover:bg-[#00FF00] hover:text-black transition-colors swiper-no-swiping cursor-pointer"
                       >
                         <ExternalLink size={20} />
                       </button>
@@ -879,7 +904,7 @@ const Projects = () => {
                     {project.desc}
                   </p>
 
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-2 mt-auto">
                     {project.tech.map((t) => (
                       <span
                         key={t}
@@ -1056,7 +1081,7 @@ const Contact = () => {
       {/* 2. Toaster component-ti ekhane add korun jeno toast dekhate pare */}
       <Toaster position="bottom-right" reverseOrder={false} />
 
-      <div className="container mx-auto px-4 sm:px-6">
+      <div className="container mx-auto px-8 md:px-16 lg:px-24 xl:px-32">
         <div className="max-w-6xl mx-auto bg-gradient-to-br from-white/5 to-transparent backdrop-blur-xl p-6 sm:p-10 md:p-16 lg:p-20 rounded-[30px] md:rounded-[40px] border border-white/10 relative overflow-hidden">
           <div className="absolute top-0 right-0 p-12 opacity-5 pointer-events-none hidden lg:block">
             <MessageSquare size={300} />
@@ -1215,7 +1240,7 @@ const Footer = () => {
   };
   return (
     <footer className="py-12 border-t border-white/5 relative">
-      <div className="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-8">
+      <div className="container mx-auto px-8 md:px-16 lg:px-24 xl:px-32 flex flex-col md:flex-row justify-between items-center gap-8">
         <div className="text-xl font-bold tracking-tighter">
           MONIR<span className="text-[#00FF00]">.</span>
         </div>
