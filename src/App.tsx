@@ -341,7 +341,7 @@ const Hero = () => {
           style={{ y }}
           className="relative order-1 lg:order-2 mb-12 lg:mb-0"
         >
-          <div className="relative w-full aspect-square max-w-[320px] sm:max-w-[420px] md:max-w-[520px] mx-auto">
+          <div className="relative w-[85%] sm:w-full aspect-square max-w-[260px] sm:max-w-[420px] md:max-w-[520px] mx-auto">
             {/* Profile Picture Placeholder */}
             <div className="absolute inset-0 border-2 border-[#00FF00]/20 rounded-full rotate-6 animate-float" />
             <div className="absolute inset-0 border-2 border-white/10 rounded-full -rotate-3 animate-float delay-700" />
@@ -359,21 +359,21 @@ const Hero = () => {
             <motion.div
               animate={{ y: [0, -15, 0], rotate: [0, 10, 0] }}
               transition={{ repeat: Infinity, duration: 4 }}
-              className="absolute top-0 -right-4 p-4 bg-black/80 backdrop-blur-md border border-white/10 rounded-2xl shadow-2xl z-20"
+              className="absolute top-0 -right-2 sm:-right-4 p-3 sm:p-4 bg-black/80 backdrop-blur-md border border-white/10 rounded-2xl shadow-2xl z-20"
             >
-              <Layout className="text-[#00FF00]" />
+              <Layout className="text-[#00FF00] w-5 h-5 sm:w-6 sm:h-6" />
             </motion.div>
             <motion.div
               animate={{ y: [0, 15, 0], rotate: [0, -10, 0] }}
               transition={{ repeat: Infinity, duration: 5, delay: 1 }}
-              className="absolute bottom-10 -left-8 p-4 bg-black/80 backdrop-blur-md border border-white/10 rounded-2xl shadow-2xl z-20"
+              className="absolute bottom-10 -left-4 sm:-left-8 p-3 sm:p-4 bg-black/80 backdrop-blur-md border border-white/10 rounded-2xl shadow-2xl z-20"
             >
-              <Database className="text-blue-400" />
+              <Database className="text-blue-400 w-5 h-5 sm:w-6 sm:h-6" />
             </motion.div>
             <motion.div
               animate={{ scale: [1, 1.1, 1] }}
               transition={{ repeat: Infinity, duration: 3, delay: 0.5 }}
-              className="absolute top-1/2 -left-12 p-3 bg-black/80 backdrop-blur-md border border-white/10 rounded-full shadow-2xl z-20"
+              className="absolute top-1/2 -left-6 sm:-left-12 p-2 sm:p-3 bg-black/80 backdrop-blur-md border border-white/10 rounded-full shadow-2xl z-20"
             >
               <Code2 className="text-emerald-400" size={20} />
             </motion.div>
