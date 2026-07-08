@@ -341,7 +341,7 @@ const Hero = () => {
           style={{ y }}
           className="relative order-1 lg:order-2 mb-12 lg:mb-0"
         >
-          <div className="relative w-[85%] sm:w-full aspect-square max-w-[260px] sm:max-w-[420px] md:max-w-[520px] mx-auto">
+          <div className="relative w-full aspect-square max-w-[300px] sm:max-w-[420px] md:max-w-[520px] mx-auto">
             {/* Profile Picture Placeholder */}
             <div className="absolute inset-0 border-2 border-[#00FF00]/20 rounded-full rotate-6 animate-float" />
             <div className="absolute inset-0 border-2 border-white/10 rounded-full -rotate-3 animate-float delay-700" />
