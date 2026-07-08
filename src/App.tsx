@@ -41,6 +41,7 @@ import {
   Box,
   Webhook,
   Rocket,
+  Award,
 } from "lucide-react";
 import { FaFacebook } from "react-icons/fa";
 
@@ -89,6 +90,7 @@ const Navbar = () => {
     { name: "Skills", href: "#skills" },
     { name: "Experience", href: "#experience" },
     { name: "Projects", href: "#projects" },
+    { name: "Certificates", href: "#certificates" },
     { name: "Contact", href: "#contact" },
   ];
 
@@ -219,7 +221,11 @@ const Hero = () => {
   };
 
   const redirectToResume = () => {
-    // window.open("/resume.pdf", "_blank", "noopener,noreferrer");
+    window.open(
+      "https://drive.google.com/file/d/18JTNMBM6qeHAAUjrV3GbLqkBYESnmfmh/view?usp=drive_link",
+      "_blank",
+      "noopener,noreferrer"
+    );
   };
 
   return (
@@ -244,9 +250,9 @@ const Hero = () => {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00FF00] opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-[#00FF00]"></span>
             </span>
-            MERN Stack Specialist
+            FullStack MERN Developer
           </motion.div>
-          <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-[0.85] mb-8 text-white">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter leading-[0.9] mb-6 text-white">
             MD. MONIR
             <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00FF00] via-emerald-400 to-blue-500 drop-shadow-[0_0_15px_rgba(0,255,0,0.3)]">
@@ -256,7 +262,7 @@ const Hero = () => {
           <p className="text-base sm:text-lg md:text-xl text-white/70 max-w-lg mx-auto lg:mx-0 mb-10 font-light leading-relaxed">
             Professional{" "}
             <span className="text-[#00FF00] font-semibold">
-              MERN Stack Developer
+              FullStack MERN Developer
             </span>
             . I build high-performance web applications with modern architecture
             and exceptional user interfaces.
@@ -307,7 +313,7 @@ const Hero = () => {
               className="w-full px-10 py-4 border border-[#00FF00]/30 text-[#00FF00] font-bold uppercase tracking-widest rounded-xl flex items-center justify-center gap-3 backdrop-blur-md hover:bg-[#00FF00]/10 transition-all"
             >
               <Download size={20} />
-              Download Resume
+              View Resume
             </motion.button>
           </div>
 
@@ -645,7 +651,12 @@ const Skills = () => {
 
         {/* GRID */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-          {skills.map((skill, i) => (
+          {skills.map((skill, i) => {
+            const getProficiencyText = (level: number) => {
+              return "Expert";
+            };
+
+            return (
             <motion.div
               key={skill.name}
               initial={{ opacity: 0, y: 20 }}
@@ -673,13 +684,13 @@ const Skills = () => {
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm">
                     <span className="text-white/40">Proficiency</span>
-                    <span className="text-[#00FF00]">{skill.level}%</span>
+                    <span className="text-[#00FF00] font-semibold">{getProficiencyText(skill.level)}</span>
                   </div>
 
                   <div className="h-2 w-full bg-white/10 rounded-full overflow-hidden">
                     <motion.div
                       initial={{ width: 0 }}
-                      whileInView={{ width: `${skill.level}%` }}
+                      whileInView={{ width: "100%" }}
                       viewport={{ once: true }}
                       transition={{ duration: 1 }}
                       className="h-full bg-gradient-to-r from-[#00FF00] to-emerald-400"
@@ -688,7 +699,7 @@ const Skills = () => {
                 </div>
               </div>
             </motion.div>
-          ))}
+          )})}
         </div>
       </div>
     </section>
@@ -845,10 +856,10 @@ const Projects = () => {
           className="pb-20"
         >
           {projects.map((project, i) => (
-            <SwiperSlide key={i} className="max-w-3xl h-auto">
+            <SwiperSlide key={i} className="max-w-3xl !h-auto self-stretch">
               <div
                 onClick={() => setSelectedProject(project)} // Open Modal on Click
-                className="group h-full flex flex-col cursor-pointer relative bg-white/5 backdrop-blur-md rounded-3xl overflow-hidden border border-white/10 transition-all hover:border-white/20"
+                className="group min-h-[480px] h-full flex flex-col cursor-pointer relative bg-white/5 backdrop-blur-md rounded-3xl overflow-hidden border border-white/10 transition-all hover:border-white/20"
               >
                 <div className="aspect-video overflow-hidden">
                   <img
@@ -1031,6 +1042,71 @@ const Projects = () => {
           </div>
         </div>
       )}
+    </section>
+  );
+};
+
+const Certificates = () => {
+  const certs = [
+    {
+      title: "Complete Web Development Course",
+      issuer: "Programming Hero",
+      date: "2026",
+      link: "https://drive.google.com/file/d/1WLnK_UBqqPejFBe6gW0PzauxN2j3CqlP/view?usp=drive_link",
+    }
+  ];
+
+  return (
+    <section id="certificates" className="py-24 relative overflow-hidden">
+      <div className="container mx-auto px-8 md:px-16 lg:px-24 xl:px-32">
+        <div className="text-center mb-16">
+          <h2 className="text-4xl md:text-5xl font-bold mb-4">Certifications</h2>
+          <p className="text-white/50 max-w-2xl mx-auto">
+            Professional achievements and continuous learning milestones.
+          </p>
+        </div>
+
+        <div className={certs.length === 1 ? "max-w-xl mx-auto" : "grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto"}>
+          {certs.map((cert, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.2 }}
+              className="group relative bg-white/5 backdrop-blur-md rounded-3xl overflow-hidden border border-white/10 hover:border-[#00FF00]/40 transition-all hover:shadow-lg hover:shadow-[#00FF00]/10"
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-[#00FF00]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              
+              <div className="aspect-[16/9] overflow-hidden bg-[#111] p-6 flex items-center justify-center relative">
+                <div className="absolute inset-0 bg-grid opacity-20" />
+                <div className="w-full h-full border-2 border-white/10 rounded-xl relative overflow-hidden group-hover:scale-105 transition-transform duration-700 bg-gradient-to-br from-black to-white/5 flex flex-col items-center justify-center p-6 text-center shadow-2xl">
+                    <div className="w-16 h-16 rounded-full bg-[#00FF00]/10 flex items-center justify-center mb-4 border border-[#00FF00]/30 shadow-[0_0_15px_rgba(0,255,0,0.2)]">
+                      <Award className="text-[#00FF00]" size={28} />
+                    </div>
+                    <h3 className="text-xl md:text-2xl font-black mb-2 tracking-tight text-white/90">{cert.title}</h3>
+                    <p className="text-white/40 text-[10px] md:text-xs font-bold uppercase tracking-[0.2em]">{cert.issuer}</p>
+                </div>
+              </div>
+              
+              <div className="p-6 md:p-8 relative z-10 bg-black/40 border-t border-white/5">
+                <div className="flex justify-between items-center">
+                  <div>
+                    <h4 className="text-lg font-bold text-white mb-1">{cert.title}</h4>
+                    <p className="text-[#00FF00] text-xs font-bold uppercase tracking-widest">{cert.issuer} • {cert.date}</p>
+                  </div>
+                  <button 
+                    onClick={() => window.open(cert.link, "_blank")}
+                    className="p-3 bg-white/10 rounded-full hover:bg-[#00FF00] hover:text-black transition-colors"
+                  >
+                    <ExternalLink size={18} />
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
     </section>
   );
 };
@@ -1334,6 +1410,7 @@ export default function App() {
         <Skills />
         <Experience />
         <Projects />
+        <Certificates />
         <Contact />
       </main>
 
