@@ -195,14 +195,14 @@ const Hero = () => {
 
   const redirectToGithub = () => {
     window.open(
-      "https://github.com/monir-codes",
+      hero?.github || "https://github.com/monir-codes",
       "_blank",
       "noopener,noreferrer",
     );
   };
   const redirectToLinkedin = () => {
     window.open(
-      "https://www.linkedin.com/in/moniruzzaman-rumman/",
+      hero?.linkedin || "https://www.linkedin.com/in/moniruzzaman-rumman/",
       "_blank",
       "noopener,noreferrer",
     );
@@ -210,7 +210,7 @@ const Hero = () => {
 
   const redirectToFB = () => {
     window.open(
-      "https://www.facebook.com/mdrumman.mondal",
+      hero?.facebook || "https://www.facebook.com/mdrumman.mondal",
       "_blank",
       "noopener,noreferrer",
     );
@@ -222,7 +222,7 @@ const Hero = () => {
 
   const redirectToResume = () => {
     window.open(
-      "https://drive.google.com/file/d/18JTNMBM6qeHAAUjrV3GbLqkBYESnmfmh/view?usp=drive_link",
+      hero?.resume || "https://drive.google.com/file/d/18JTNMBM6qeHAAUjrV3GbLqkBYESnmfmh/view?usp=drive_link",
       "_blank",
       "noopener,noreferrer"
     );
@@ -250,7 +250,7 @@ const Hero = () => {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00FF00] opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-[#00FF00]"></span>
             </span>
-            FullStack MERN Developer
+            {hero?.title || "FullStack MERN Developer"}
           </motion.div>
           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter leading-[0.9] mb-6 text-white">
             MD. MONIR
@@ -347,7 +347,7 @@ const Hero = () => {
             <div className="absolute inset-0 border-2 border-white/10 rounded-full -rotate-3 animate-float delay-700" />
             <div className="absolute inset-4 bg-gradient-to-br from-[#00FF00]/20 to-blue-500/20 rounded-full overflow-hidden backdrop-blur-md border border-white/20 flex items-center justify-center shadow-[0_0_50px_rgba(0,255,0,0.15)]">
               <img
-                src="https://i.postimg.cc/fLZwBwzf/Picsart-26-01-27-17-04-44-604.jpg"
+                src={hero?.image || "https://i.postimg.cc/fLZwBwzf/Picsart-26-01-27-17-04-44-604.jpg"}
                 alt="MD. Moniruzzaman"
                 className="w-full h-full object-cover opacity-80  transition-all duration-700"
                 referrerPolicy="no-referrer"
@@ -452,7 +452,7 @@ const About = () => {
             <div className="grid grid-cols-2 gap-10 mt-12">
               <div>
                 <h4 className="text-4xl font-bold text-[#00FF00]">
-                  {inView && <CountUp end={3} duration={2} />}+
+                  {inView && <CountUp end={about?.experienceYears || 3} duration={2} />}+
                 </h4>
                 <p className="text-sm text-white/40 uppercase tracking-widest mt-2">
                   Years Experience
@@ -461,7 +461,7 @@ const About = () => {
 
               <div>
                 <h4 className="text-4xl font-bold text-[#00FF00]">
-                  {inView && <CountUp end={50} duration={2} />}+
+                  {inView && <CountUp end={about?.projectsDelivered || 50} duration={2} />}+
                 </h4>
                 <p className="text-sm text-white/40 uppercase tracking-widest mt-2">
                   Projects Delivered
@@ -622,6 +622,16 @@ const Skills = () => {
     },
   ];
 
+  const [apiSkills, setApiSkills] = useState<any[]>([]);
+  useEffect(() => {
+    fetch(`${import.meta.env.VITE_API_URL || "https://portfolio-server-ten-fawn.vercel.app"}/api/skills`).then(r=>r.json()).then(d=>setApiSkills(d));
+  }, []);
+  const activeSkills = apiSkills.length > 0 ? apiSkills : skills;
+  
+  const IconMap: any = {
+    Code2, Layout, Box, Server, Terminal, Database, Cloud, Wind, Zap, Webhook, GitBranch, Github, Figma, Rocket, Cpu
+  };
+
   const categories = ["Frontend", "Backend", "Tools", "Design"];
 
   return (
@@ -651,7 +661,11 @@ const Skills = () => {
 
         {/* GRID */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-          {skills.map((skill, i) => {
+          {activeSkills.map((skill, i) => {
+            const IconComponent = typeof skill.icon === 'string' ? (IconMap[skill.icon] || Code2) : null;
+            const RenderedIcon = IconComponent ? <IconComponent className={skill.color || "text-[#00FF00]"} size={24} /> : skill.icon;
+            const RenderedIconLarge = IconComponent ? <IconComponent className={skill.color || "text-[#00FF00]"} size={70} /> : (skill.icon ? React.cloneElement(skill.icon, { size: 70 }) : null);
+
             const getProficiencyText = (level: number) => {
               return "Expert";
             };
@@ -670,13 +684,13 @@ const Skills = () => {
 
               {/* BIG ICON BACKGROUND */}
               <div className="absolute top-4 right-4 opacity-10 group-hover:opacity-20 transition">
-                {React.cloneElement(skill.icon, { size: 70 })}
+                {RenderedIconLarge}
               </div>
 
               <div className="relative z-10">
                 <div className="flex items-center gap-4 mb-6">
                   <div className="p-3 bg-black rounded-xl border border-white/10 group-hover:scale-110 transition">
-                    {skill.icon}
+                    {RenderedIcon}
                   </div>
                   <h3 className="text-lg font-bold">{skill.name}</h3>
                 </div>
@@ -707,7 +721,12 @@ const Skills = () => {
 };
 
 const Experience = () => {
-  const experiences = [
+  const [apiExp, setApiExp] = useState<any[]>([]);
+  useEffect(() => {
+    fetch(`${import.meta.env.VITE_API_URL || "https://portfolio-server-ten-fawn.vercel.app"}/api/experience`).then(r=>r.json()).then(d=>setApiExp(d));
+  }, []);
+  const activeExperiences = apiExp.length > 0 ? apiExp : [
+
     {
       role: "Full Stack Developer",
       company: "Freelance / Remote Work",
@@ -735,7 +754,7 @@ const Experience = () => {
         </div>
 
         <div className="relative border-l border-white/10 ml-4 md:ml-10 space-y-10">
-          {experiences.map((exp, i) => (
+          {activeExperiences.map((exp, i) => (
             <motion.div 
               key={i} 
               initial={{ opacity: 0, x: -30 }}
@@ -1048,7 +1067,12 @@ const Projects = () => {
 };
 
 const Certificates = () => {
-  const certs = [
+  const [apiCerts, setApiCerts] = useState<any[]>([]);
+  useEffect(() => {
+    fetch(`${import.meta.env.VITE_API_URL || "https://portfolio-server-ten-fawn.vercel.app"}/api/certificates`).then(r=>r.json()).then(d=>setApiCerts(d));
+  }, []);
+  const activeCerts = apiCerts.length > 0 ? apiCerts : [
+
     {
       title: "Complete Web Development Course",
       issuer: "Programming Hero",
@@ -1067,8 +1091,8 @@ const Certificates = () => {
           </p>
         </div>
 
-        <div className={certs.length === 1 ? "max-w-xl mx-auto" : "grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto"}>
-          {certs.map((cert, i) => (
+        <div className={activeCerts.length === 1 ? "max-w-xl mx-auto" : "grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto"}>
+          {activeCerts.map((cert, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, y: 30 }}
