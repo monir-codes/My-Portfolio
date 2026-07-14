@@ -125,7 +125,7 @@ const Navbar = () => {
           : "bg-transparent",
       )}
     >
-      <div className="container mx-auto px-8 md:px-16 lg:px-24 xl:px-32 flex justify-between items-center">
+      <div className="container mx-auto px-8 md:px-10 lg:px-24 xl:px-32 flex justify-between items-center">
         {/* Logo */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}
@@ -136,7 +136,7 @@ const Navbar = () => {
         </motion.div>
 
         {/* Desktop Nav */}
-        <div className="hidden md:flex gap-8 items-center">
+        <div className="hidden md:flex gap-4 lg:gap-8 items-center">
           {navLinks.map((link, i) => (
             <motion.a
               key={link.name}
@@ -145,7 +145,7 @@ const Navbar = () => {
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.1 }}
-              className="text-sm font-medium hover:text-[#00FF00] transition-colors uppercase tracking-widest"
+              className="text-[11px] lg:text-sm font-medium hover:text-[#00FF00] transition-colors uppercase tracking-widest"
             >
               {link.name}
             </motion.a>
@@ -190,6 +190,14 @@ const Navbar = () => {
 };
 
 const Hero = () => {
+  const [hero, setHero] = useState<any>(null);
+  useEffect(() => {
+    fetch(`${import.meta.env.VITE_API_URL || "https://portfolio-server-ten-fawn.vercel.app"}/api/hero`)
+      .then(r => r.json())
+      .then(d => setHero(d))
+      .catch(e => console.error(e));
+  }, []);
+
   const { scrollYProgress } = useScroll();
   const y = useTransform(scrollYProgress, [0, 1], [0, 200]);
 
@@ -233,7 +241,7 @@ const Hero = () => {
       id="home"
       className="relative min-h-screen flex items-center justify-center overflow-hidden pt-24 pb-12"
     >
-      <div className="container mx-auto px-8 md:px-16 lg:px-24 xl:px-32 relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+      <div className="container mx-auto px-8 md:px-10 lg:px-24 xl:px-32 relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-10 xl:gap-16 items-center w-full">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -252,14 +260,15 @@ const Hero = () => {
             </span>
             {hero?.title || "FullStack MERN Developer"}
           </motion.div>
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter leading-[0.9] mb-6 text-white">
+          <h1 className="text-4xl sm:text-5xl md:text-5xl lg:text-5xl xl:text-6xl font-black tracking-tighter leading-[0.9] mb-4 lg:mb-6 text-white">
             MD. MONIR
-            <br />
+            <br className="block md:hidden lg:block" />
+            <span className="hidden md:inline lg:hidden">&nbsp;</span>
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00FF00] via-emerald-400 to-blue-500 drop-shadow-[0_0_15px_rgba(0,255,0,0.3)]">
               UZZAMAN
             </span>
           </h1>
-          <p className="text-base sm:text-lg md:text-xl text-white/70 max-w-lg mx-auto lg:mx-0 mb-10 font-light leading-relaxed">
+          <p className="text-base sm:text-lg md:text-lg lg:text-base xl:text-lg text-white/70 max-w-lg mx-auto lg:mx-0 mb-6 lg:mb-8 font-light leading-relaxed">
             Professional{" "}
             <span className="text-[#00FF00] font-semibold">
               FullStack MERN Developer
@@ -267,7 +276,7 @@ const Hero = () => {
             . I build high-performance web applications with modern architecture
             and exceptional user interfaces.
           </p>
-          <div className="flex flex-col gap-5 justify-center lg:justify-start">
+          <div className="flex flex-col gap-4 justify-center lg:justify-start max-w-sm sm:max-w-md mx-auto lg:mx-0 w-full">
             {/* Top Buttons */}
             <div className="flex flex-col sm:flex-row gap-5">
               <motion.button
@@ -341,7 +350,7 @@ const Hero = () => {
           style={{ y }}
           className="relative order-1 lg:order-2 mb-12 lg:mb-0"
         >
-          <div className="relative w-full aspect-square max-w-[300px] sm:max-w-[420px] md:max-w-[520px] mx-auto">
+          <div className="relative w-full aspect-square max-w-[300px] sm:max-w-[380px] lg:max-w-[400px] xl:max-w-[460px] mx-auto">
             {/* Profile Picture Placeholder */}
             <div className="absolute inset-0 border-2 border-[#00FF00]/20 rounded-full rotate-6 animate-float" />
             <div className="absolute inset-0 border-2 border-white/10 rounded-full -rotate-3 animate-float delay-700" />
@@ -385,6 +394,14 @@ const Hero = () => {
 };
 
 const About = () => {
+  const [about, setAbout] = useState<any>(null);
+  useEffect(() => {
+    fetch(`${import.meta.env.VITE_API_URL || "https://portfolio-server-ten-fawn.vercel.app"}/api/about`)
+      .then(r => r.json())
+      .then(d => setAbout(d))
+      .catch(e => console.error(e));
+  }, []);
+
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.2 });
 
   const features = [
@@ -411,30 +428,30 @@ const About = () => {
   ];
 
   return (
-    <section id="about" className="py-28 relative" ref={ref}>
-      <div className="container mx-auto px-8 md:px-16 lg:px-24 xl:px-32">
-        <div className="grid md:grid-cols-2 gap-20 items-center">
+    <section id="about" className="py-28 md:py-16 md:min-h-screen md:flex md:items-center relative" ref={ref}>
+      <div className="container mx-auto px-8 md:px-10 lg:px-24 xl:px-32 w-full">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-8 xl:gap-16 items-center">
           {/* LEFT */}
           <motion.div
             initial={{ opacity: 0, x: -40 }}
             animate={inView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.7 }}
           >
-            <h2 className="text-4xl md:text-5xl font-bold leading-tight mb-6 tracking-tight">
+            <h2 className="text-4xl md:text-4xl lg:text-4xl xl:text-5xl font-bold leading-tight mb-4 lg:mb-6 tracking-tight">
               Building Modern <br />
               <span className="italic font-display text-[#00FF00]">
                 Web Experiences
               </span>
             </h2>
 
-            <p className="text-white/50 text-lg mb-8 leading-relaxed">
+            <p className="text-white/50 text-lg lg:text-sm xl:text-base mb-6 lg:mb-6 leading-relaxed">
               Full-stack developer specializing in Next.js, React, and the MERN
               stack, focused on building scalable, production-ready web
               applications with modern UI/UX, clean architecture, and
               performance optimization.
             </p>
 
-            <div className="space-y-6 text-white/60 text-lg leading-relaxed">
+            <div className="space-y-4 lg:space-y-3 xl:space-y-6 text-white/60 text-lg lg:text-sm xl:text-base leading-relaxed">
               <p>
                 I specialize in building full-stack web applications using
                 modern JavaScript frameworks. My focus is on creating fast,
@@ -475,12 +492,12 @@ const About = () => {
             initial={{ opacity: 0, x: 40 }}
             animate={inView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.7, delay: 0.2 }}
-            className="grid grid-cols-1 sm:grid-cols-2 gap-5"
+            className="grid grid-cols-1 sm:grid-cols-2 gap-5 lg:gap-4 xl:gap-5"
           >
             {features.map((item, i) => (
               <div
                 key={i}
-                className="group relative p-6 md:p-7 rounded-2xl
+                className="group relative p-6 md:p-7 lg:p-4 xl:p-5 rounded-2xl
                 bg-white/5 backdrop-blur-xl border border-white/10
                 overflow-hidden transition-all duration-300
                 hover:-translate-y-2 hover:scale-[1.03]
@@ -635,14 +652,14 @@ const Skills = () => {
   const categories = ["Frontend", "Backend", "Tools", "Design"];
 
   return (
-    <section id="skills" className="py-24 relative overflow-hidden">
-      <div className="container mx-auto px-8 md:px-16 lg:px-24 xl:px-32">
+    <section id="skills" className="py-24 md:py-16 md:min-h-screen md:flex md:items-center relative overflow-hidden">
+      <div className="container mx-auto px-8 md:px-10 lg:px-24 xl:px-32 w-full">
         {/* HEADER */}
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">
+        <div className="text-center mb-10 lg:mb-12">
+          <h2 className="text-4xl md:text-4xl lg:text-4xl xl:text-5xl font-bold mb-3 lg:mb-4">
             Technical Arsenal
           </h2>
-          <p className="text-white/50 max-w-2xl mx-auto">
+          <p className="text-white/50 max-w-2xl mx-auto lg:text-sm xl:text-base">
             Technologies I use to build scalable, modern web applications
           </p>
         </div>
@@ -744,16 +761,16 @@ const Experience = () => {
   ];
 
   return (
-    <section id="experience" className="py-28 relative">
-      <div className="container mx-auto px-8 md:px-16 lg:px-24 xl:px-32">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">Experience</h2>
-          <p className="text-white/50 max-w-2xl mx-auto">
+    <section id="experience" className="py-28 md:py-16 md:min-h-screen md:flex md:items-center relative">
+      <div className="container mx-auto px-8 md:px-10 lg:px-24 xl:px-32 w-full">
+        <div className="text-center mb-12 lg:mb-10">
+          <h2 className="text-4xl md:text-4xl lg:text-4xl xl:text-5xl font-bold mb-3 lg:mb-4">Experience</h2>
+          <p className="text-white/50 max-w-2xl mx-auto lg:text-sm xl:text-base">
             My professional journey and hands-on development experience
           </p>
         </div>
 
-        <div className="relative border-l border-white/10 ml-4 md:ml-10 space-y-10">
+        <div className="relative border-l border-white/10 ml-4 md:ml-10 space-y-8 lg:space-y-6 xl:space-y-8 max-w-4xl mx-auto">
           {activeExperiences.map((exp, i) => (
             <motion.div 
               key={i} 
@@ -765,10 +782,10 @@ const Experience = () => {
             >
               <div className="absolute -left-[9px] top-2 w-4 h-4 rounded-full bg-[#00FF00] shadow-[0_0_15px_rgba(0,255,0,0.7)]" />
 
-              <div className="p-6 md:p-8 rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 hover:border-[#00FF00]/30 transition-all">
+              <div className="p-6 md:p-8 lg:p-6 rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 hover:border-[#00FF00]/30 transition-all">
                 <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-2">
-                  <h3 className="text-xl font-bold text-white">{exp.role}</h3>
-                  <span className="text-sm text-[#00FF00]">{exp.duration}</span>
+                  <h3 className="text-xl lg:text-lg xl:text-xl font-bold text-white">{exp.role}</h3>
+                  <span className="text-sm lg:text-xs xl:text-sm text-[#00FF00]">{exp.duration}</span>
                 </div>
 
                 <p className="text-white/60 mb-4">{exp.company}</p>
@@ -826,15 +843,15 @@ const Projects = () => {
   }, [selectedProject]);
 
   return (
-    <section id="projects" className="py-24 relative text-white">
-      <div className="container mx-auto px-8 md:px-16 lg:px-24 xl:px-32">
+    <section id="projects" className="py-24 md:py-16 md:min-h-screen md:flex md:items-center relative text-white">
+      <div className="container mx-auto px-8 md:px-10 lg:px-24 xl:px-32 w-full">
         {/* Header Section */}
-        <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+        <div className="flex flex-col md:flex-row justify-between items-end mb-10 lg:mb-12 gap-6">
           <div>
-            <h2 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight">
+            <h2 className="text-4xl md:text-4xl lg:text-4xl xl:text-5xl font-bold mb-3 lg:mb-4 tracking-tight">
               Featured Work
             </h2>
-            <p className="text-white/50 max-w-xl">
+            <p className="text-white/50 max-w-xl lg:text-sm xl:text-base">
               A selection of my recent projects where I've pushed the boundaries
               of web development.
             </p>
@@ -876,12 +893,12 @@ const Projects = () => {
           className="pb-20"
         >
           {projects.map((project, i) => (
-            <SwiperSlide key={i} className="max-w-3xl !h-auto self-stretch">
+            <SwiperSlide key={i} className="max-w-3xl lg:max-w-lg xl:max-w-xl !h-auto self-stretch">
               <div
                 onClick={() => setSelectedProject(project)} // Open Modal on Click
-                className="group min-h-[480px] h-full flex flex-col cursor-pointer relative bg-white/5 backdrop-blur-md rounded-3xl overflow-hidden border border-white/10 transition-all hover:border-white/20"
+                className="group min-h-[480px] lg:min-h-[250px] xl:min-h-[300px] h-full flex flex-col cursor-pointer relative bg-white/5 backdrop-blur-md rounded-3xl overflow-hidden border border-white/10 transition-all hover:border-white/20"
               >
-                <div className="aspect-video overflow-hidden">
+                <div className="aspect-video lg:aspect-[21/9] xl:aspect-[2/1] overflow-hidden">
                   <img
                     src={project.image}
                     alt={project.title}
@@ -889,13 +906,13 @@ const Projects = () => {
                     referrerPolicy="no-referrer"
                   />
                 </div>
-                <div className="p-8 flex-1 flex flex-col">
+                <div className="p-8 lg:p-4 xl:p-5 flex-1 flex flex-col">
                   <div className="flex justify-between items-start mb-4">
                     <div className="flex-1 min-w-0 mr-4">
-                      <span className="text-[#00FF00] text-xs font-bold uppercase tracking-widest mb-2 block">
+                      <span className="text-[#00FF00] text-xs lg:text-[10px] font-bold uppercase tracking-widest mb-1 lg:mb-2 block">
                         {project.category}
                       </span>
-                      <h3 className="text-2xl font-bold truncate">
+                      <h3 className="text-2xl lg:text-lg xl:text-xl font-bold truncate">
                         {project.title}
                       </h3>
                     </div>
@@ -931,19 +948,24 @@ const Projects = () => {
                     </div>
                   </div>
 
-                  <p className="text-white/60 mb-6 leading-relaxed line-clamp-2">
+                  <p className="text-white/60 mb-6 lg:mb-3 text-base lg:text-xs xl:text-sm leading-relaxed line-clamp-2">
                     {project.desc}
                   </p>
 
                   <div className="flex flex-wrap gap-2 mt-auto">
-                    {project.tech.map((t) => (
+                    {project.tech.slice(0, 3).map((t) => (
                       <span
                         key={t}
-                        className="px-3 py-1 bg-black border border-white/10 rounded-full text-[10px] uppercase font-bold tracking-wider text-white/40"
+                        className="px-3 py-1 bg-black border border-white/10 rounded-full text-[10px] lg:text-[9px] uppercase font-bold tracking-wider text-white/40"
                       >
                         {t}
                       </span>
                     ))}
+                    {project.tech.length > 3 && (
+                      <span className="px-3 py-1 bg-black border border-white/10 rounded-full text-[10px] lg:text-[9px] uppercase font-bold tracking-wider text-white/40">
+                        +{project.tech.length - 3}
+                      </span>
+                    )}
                   </div>
                 </div>
               </div>
@@ -972,7 +994,7 @@ const Projects = () => {
             </button>
 
             {/* === LEFT SIDE (Sidebar) === */}
-            <div className="w-full md:w-[380px] flex flex-col bg-[#111] border-b md:border-b-0 md:border-r border-white/10 shrink-0 h-[45%] md:h-full">
+            <div className="w-full md:w-[320px] lg:w-[380px] flex flex-col bg-[#111] border-b md:border-b-0 md:border-r border-white/10 shrink-0 h-[45%] md:h-full">
               {/* 1. Fixed Image Part */}
               <div className="p-6 md:p-10 pb-4 shrink-0">
                 <div className="aspect-video w-full overflow-hidden rounded-2xl border border-white/10 shadow-lg">
@@ -1082,16 +1104,16 @@ const Certificates = () => {
   ];
 
   return (
-    <section id="certificates" className="py-24 relative overflow-hidden">
-      <div className="container mx-auto px-8 md:px-16 lg:px-24 xl:px-32">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">Certifications</h2>
-          <p className="text-white/50 max-w-2xl mx-auto">
+    <section id="certificates" className="py-24 md:py-16 md:min-h-screen md:flex md:items-center relative overflow-hidden">
+      <div className="container mx-auto px-8 md:px-10 lg:px-24 xl:px-32 w-full">
+        <div className="text-center mb-10 lg:mb-12">
+          <h2 className="text-4xl md:text-4xl lg:text-4xl xl:text-5xl font-bold mb-3 lg:mb-4">Certifications</h2>
+          <p className="text-white/50 max-w-2xl mx-auto lg:text-sm xl:text-base">
             Professional achievements and continuous learning milestones.
           </p>
         </div>
 
-        <div className={activeCerts.length === 1 ? "max-w-xl mx-auto" : "grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto"}>
+        <div className={activeCerts.length === 1 ? "max-w-xl mx-auto" : "grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-6 xl:gap-8 max-w-5xl mx-auto"}>
           {activeCerts.map((cert, i) => (
             <motion.div
               key={i}
@@ -1178,20 +1200,20 @@ const Contact = () => {
   };
 
   return (
-    <section id="contact" className="py-16 md:py-24 relative overflow-hidden">
+    <section id="contact" className="py-16 md:py-16 md:min-h-screen md:flex md:items-center relative overflow-hidden">
       {/* 2. Toaster component-ti ekhane add korun jeno toast dekhate pare */}
       <Toaster position="bottom-right" reverseOrder={false} />
 
-      <div className="container mx-auto px-8 md:px-16 lg:px-24 xl:px-32">
-        <div className="max-w-6xl mx-auto bg-gradient-to-br from-white/5 to-transparent backdrop-blur-xl p-6 sm:p-10 md:p-16 lg:p-20 rounded-[30px] md:rounded-[40px] border border-white/10 relative overflow-hidden">
+      <div className="container mx-auto px-8 md:px-10 lg:px-24 xl:px-32 w-full">
+        <div className="max-w-6xl mx-auto bg-gradient-to-br from-white/5 to-transparent backdrop-blur-xl p-6 sm:p-10 md:p-16 lg:p-8 xl:p-12 rounded-[30px] md:rounded-[40px] border border-white/10 relative overflow-hidden">
           <div className="absolute top-0 right-0 p-12 opacity-5 pointer-events-none hidden lg:block">
             <MessageSquare size={300} />
           </div>
 
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 relative z-10">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-10 xl:gap-16 relative z-10">
             {/* Left Side: Info */}
             <div className="flex flex-col justify-center">
-              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 tracking-tighter leading-tight text-center lg:text-left">
+              <h2 className="text-3xl sm:text-4xl md:text-4xl lg:text-4xl xl:text-5xl font-bold mb-4 lg:mb-6 tracking-tighter leading-tight text-center lg:text-left">
                 Let's build <br className="hidden sm:block" />
                 something{" "}
                 <span className="text-[#00FF00] drop-shadow-[0_0_10px_rgba(0,255,0,0.3)]">
@@ -1341,7 +1363,7 @@ const Footer = () => {
   };
   return (
     <footer className="py-12 border-t border-white/5 relative">
-      <div className="container mx-auto px-8 md:px-16 lg:px-24 xl:px-32 flex flex-col md:flex-row justify-between items-center gap-8">
+      <div className="container mx-auto px-8 md:px-10 lg:px-24 xl:px-32 flex flex-col md:flex-row justify-between items-center gap-8">
         <div className="text-xl font-bold tracking-tighter">
           MONIR<span className="text-[#00FF00]">.</span>
         </div>
