@@ -2,8 +2,6 @@
 
 **Professional Fullstack MERN Web Developer** 🚀
 
-![Portfolio Preview](https://monir-uzzaman.vercel.app/og-image.jpg)
-
 Welcome to my GitHub! I am a passionate and detail-oriented web developer specializing in the **MERN Stack** (MongoDB, Express.js, React, Node.js). I thrive on turning complex problems into elegant, scalable, and highly performant web applications. 
 
 🔗 **Check out my live portfolio:** [monir-uzzaman.vercel.app](https://monir-uzzaman.vercel.app/)
