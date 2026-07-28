@@ -22,7 +22,7 @@ My goal is always to deliver modern digital solutions that don't just meet requi
 
 ### Frontend
 - **React.js / Next.js** (TypeScript & JavaScript)
-- **Tailwind CSS** & **Bootstrap**
+- **Tailwind CSS**
 - **Framer Motion** (for advanced UI animations)
 - **HTML5, CSS3, ES6+**
 
