@@ -1,4 +1,4 @@
-# 👋 Hi, I'm Moniruzzaman Rumman
+# 👋 Hi, I'm Md. Moniruzzaman
 
 **Professional Fullstack MERN Web Developer** 🚀
 
@@ -53,9 +53,10 @@ My goal is always to deliver modern digital solutions that don't just meet requi
 
 I am currently open for exciting new opportunities, freelance projects, or just a good chat about tech! 
 
-- 💼 **LinkedIn:** [Moniruzzaman](https://www.linkedin.com/in/md-moniruzzaman-rumman/)
+- 💼 **LinkedIn:** [moniruzzaman-rumman](https://www.linkedin.com/in/moniruzzaman-rumman/)
+- 🐦 **Twitter/X:** [@mondal_rumman](https://x.com/mondal_rumman)
 - 🌐 **Portfolio:** [monir-uzzaman.vercel.app](https://monir-uzzaman.vercel.app/)
-- 📧 **Email:** Reach out via my portfolio contact form!
+- 📧 **Email:** [moniruzzamanrumman@gmail.com](mailto:moniruzzamanrumman@gmail.com)
 
 ---
 *“Building the web, one pixel and one line of code at a time.”*
