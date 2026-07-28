@@ -11,6 +11,7 @@ import {
   useSpring,
   useTransform,
 } from "motion/react";
+import { Helmet } from "react-helmet-async";
 import emailjs from "@emailjs/browser";
 import toast, { Toaster } from "react-hot-toast";
 import {
@@ -42,20 +43,16 @@ import {
   Webhook,
   Rocket,
   Award,
+  ChevronLeft,
 } from "lucide-react";
 import { FaFacebook } from "react-icons/fa";
+import { BrowserRouter, Routes, Route, useNavigate, useLocation } from "react-router-dom";
 
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination, Autoplay, EffectCoverflow } from "swiper/modules";
 import { useInView } from "react-intersection-observer";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import CountUp from "react-countup";
-
-// Import Swiper styles
-import "swiper/css";
-import "swiper/css/pagination";
-import "swiper/css/effect-coverflow";
+import AllProjects from "./pages/AllProjects";
 
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -94,26 +91,33 @@ const Navbar = () => {
     { name: "Contact", href: "#contact" },
   ];
 
+  const navigate = useNavigate();
+  const location = useLocation();
+
   // ✅ Unified smooth scroll function
   const handleScroll = (e, href) => {
     e.preventDefault();
-
     const id = href.replace("#", "");
-
+    
     // 👇 close menu first
     setIsMobileMenuOpen(false);
 
-    // 👇 wait for DOM update + animation settle
-    setTimeout(() => {
-      const element = document.getElementById(id);
-
-      if (element) {
-        element.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        });
-      }
-    }, 150);
+    if (location.pathname !== "/") {
+      navigate("/");
+      setTimeout(() => {
+        const element = document.getElementById(id);
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }, 300);
+    } else {
+      setTimeout(() => {
+        const element = document.getElementById(id);
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }, 150);
+    }
   };
 
   return (
@@ -822,12 +826,11 @@ const Projects = () => {
       .then((data) => setProjects(data));
   }, []);
 
-  const redirectToRepo = () => {
-    window.open(
-      "https://github.com/monir-codes?tab=repositories",
-      "_blank",
-      "noopener,noreferrer",
-    );
+  const navigate = useNavigate();
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const redirectToAllProjects = () => {
+    navigate("/projects");
   };
 
   // Add this to prevent background scrolling when modal is open
@@ -841,6 +844,13 @@ const Projects = () => {
       document.body.style.overflow = "unset";
     };
   }, [selectedProject]);
+
+  const scrollLeft = () => {
+    if (scrollRef.current) scrollRef.current.scrollBy({ left: -350, behavior: 'smooth' });
+  };
+  const scrollRight = () => {
+    if (scrollRef.current) scrollRef.current.scrollBy({ left: 350, behavior: 'smooth' });
+  };
 
   return (
     <section id="projects" className="py-24 md:py-16 md:min-h-screen md:flex md:items-center relative text-white">
@@ -857,121 +867,82 @@ const Projects = () => {
             </p>
           </div>
           <button
-            onClick={redirectToRepo}
+            onClick={redirectToAllProjects}
             className="px-6 py-3 border border-white/20 rounded-full text-sm font-bold uppercase tracking-widest hover:bg-white/10 transition-colors"
           >
             View All Projects
           </button>
         </div>
 
-        {/* Swiper Section */}
-        <Swiper
-          modules={[Pagination, Autoplay, EffectCoverflow]}
-          effect="coverflow"
-          grabCursor={false}
-          preventClicks={false}
-          preventClicksPropagation={false}
-          centeredSlides={true}
-          slidesPerView={1}
-          speed={800}
-          watchSlidesProgress={true}
-          breakpoints={{
-            640: { slidesPerView: 1.5 },
-            1024: { slidesPerView: 2 },
-            1280: { slidesPerView: 2.5 },
-          }}
-          coverflowEffect={{
-            rotate: 30,
-            stretch: 0,
-            depth: 120,
-            modifier: 1,
-            slideShadows: false,
-          }}
-          spaceBetween={40}
-          pagination={{ clickable: true }}
-          autoplay={{ delay: 3000, disableOnInteraction: false }}
-          className="pb-20"
-        >
-          {projects.map((project, i) => (
-            <SwiperSlide key={i} className="max-w-3xl lg:max-w-lg xl:max-w-xl !h-auto self-stretch">
-              <div
-                onClick={() => setSelectedProject(project)} // Open Modal on Click
-                className="group min-h-[480px] lg:min-h-[250px] xl:min-h-[300px] h-full flex flex-col cursor-pointer relative bg-white/5 backdrop-blur-md rounded-3xl overflow-hidden border border-white/10 transition-all hover:border-white/20"
+        {/* Custom Scroll Section */}
+        <div className="relative group/scroll">
+          <button 
+            onClick={scrollLeft}
+            className="absolute -left-4 md:-left-8 top-1/2 -translate-y-1/2 z-20 p-3 bg-black/60 border border-white/20 rounded-full text-white backdrop-blur-md opacity-0 group-hover/scroll:opacity-100 transition-opacity hover:bg-[#00FF00] hover:text-black hover:border-transparent hidden sm:block shadow-xl"
+          >
+            <ChevronLeft size={24} />
+          </button>
+          
+          <button 
+            onClick={scrollRight}
+            className="absolute -right-4 md:-right-8 top-1/2 -translate-y-1/2 z-20 p-3 bg-black/60 border border-white/20 rounded-full text-white backdrop-blur-md opacity-0 group-hover/scroll:opacity-100 transition-opacity hover:bg-[#00FF00] hover:text-black hover:border-transparent hidden sm:block shadow-xl"
+          >
+            <ChevronRight size={24} />
+          </button>
+
+          <div 
+            ref={scrollRef}
+            className="flex overflow-x-auto gap-6 pb-12 snap-x snap-mandatory hide-scrollbar relative z-10"
+            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          >
+            {projects.map((project: any, i) => (
+              <div 
+                key={i} 
+                className="snap-center shrink-0 w-[85vw] sm:w-[400px] lg:w-[450px]"
               >
-                <div className="aspect-video lg:aspect-[21/9] xl:aspect-[2/1] overflow-hidden">
-                  <img
-                    src={project.image}
-                    alt={project.title}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                    referrerPolicy="no-referrer"
-                  />
-                </div>
-                <div className="p-8 lg:p-4 xl:p-5 flex-1 flex flex-col">
-                  <div className="flex justify-between items-start mb-4">
-                    <div className="flex-1 min-w-0 mr-4">
-                      <span className="text-[#00FF00] text-xs lg:text-[10px] font-bold uppercase tracking-widest mb-1 lg:mb-2 block">
-                        {project.category}
-                      </span>
-                      <h3 className="text-2xl lg:text-lg xl:text-xl font-bold truncate">
-                        {project.title}
-                      </h3>
-                    </div>
-                    <div className="flex gap-2 shrink-0">
-                      <button
-                        onPointerDown={(e) => e.stopPropagation()}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          window.open(
-                            project.repo,
-                            "_blank",
-                            "noopener,noreferrer",
-                          );
-                        }}
-                        className="p-2 bg-white/10 rounded-full hover:bg-[#00FF00] hover:text-black transition-colors swiper-no-swiping cursor-pointer"
-                      >
-                        <Github size={20} />
-                      </button>
-                      <button
-                        onPointerDown={(e) => e.stopPropagation()}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          window.open(
-                            project.live,
-                            "_blank",
-                            "noopener,noreferrer",
-                          );
-                        }}
-                        className="p-2 bg-white/10 rounded-full hover:bg-[#00FF00] hover:text-black transition-colors swiper-no-swiping cursor-pointer"
-                      >
-                        <ExternalLink size={20} />
-                      </button>
+                <div
+                  onClick={() => setSelectedProject(project)}
+                  className="group w-full h-[450px] flex flex-col relative bg-white/5 backdrop-blur-md rounded-3xl overflow-hidden border border-white/10 transition-all cursor-pointer hover:border-white/20 hover:shadow-[0_0_30px_rgba(0,255,0,0.1)] hover:-translate-y-2"
+                >
+                  <div className="h-[220px] overflow-hidden bg-black relative shrink-0">
+                    <img
+                      src={project.image}
+                      alt={project.title}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                      referrerPolicy="no-referrer"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent opacity-80" />
+                    <div className="absolute top-4 left-4 px-3 py-1 bg-black/60 backdrop-blur-md border border-white/10 rounded-full text-[9px] uppercase font-bold tracking-widest text-[#00FF00]">
+                      {project.category || "Project"}
                     </div>
                   </div>
+                  
+                  <div className="p-6 flex-1 flex flex-col relative z-10 bg-gradient-to-b from-black/40 to-transparent">
+                    <h3 className="text-xl font-bold truncate group-hover:text-[#00FF00] transition-colors mb-3">
+                      {project.title}
+                    </h3>
+                    <p className="text-white/50 text-sm leading-relaxed line-clamp-3 mb-6 flex-1">
+                      {project.desc}
+                    </p>
 
-                  <p className="text-white/60 mb-6 lg:mb-3 text-base lg:text-xs xl:text-sm leading-relaxed line-clamp-2">
-                    {project.desc}
-                  </p>
-
-                  <div className="flex flex-wrap gap-2 mt-auto">
-                    {project.tech.slice(0, 3).map((t) => (
-                      <span
-                        key={t}
-                        className="px-3 py-1 bg-black border border-white/10 rounded-full text-[10px] lg:text-[9px] uppercase font-bold tracking-wider text-white/40"
-                      >
-                        {t}
-                      </span>
-                    ))}
-                    {project.tech.length > 3 && (
-                      <span className="px-3 py-1 bg-black border border-white/10 rounded-full text-[10px] lg:text-[9px] uppercase font-bold tracking-wider text-white/40">
-                        +{project.tech.length - 3}
-                      </span>
-                    )}
+                    <div className="flex flex-wrap gap-2 mt-auto">
+                      {project.tech?.slice(0, 3).map((t: string) => (
+                        <span key={t} className="px-2.5 py-1 bg-white/5 border border-white/10 rounded-md text-[9px] uppercase font-bold tracking-wider text-white/40">
+                          {t}
+                        </span>
+                      ))}
+                      {project.tech?.length > 3 && (
+                        <span className="px-2.5 py-1 bg-white/5 border border-white/10 rounded-md text-[9px] uppercase font-bold tracking-wider text-white/40">
+                          +{project.tech.length - 3}
+                        </span>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
+            ))}
+          </div>
+        </div>
       </div>
 
       {/* --- REFINED PROFESSIONAL MODAL --- */}
@@ -1429,6 +1400,25 @@ const ScrollToTop = () => {
   );
 };
 
+const Home = () => {
+  return (
+    <>
+      <Helmet>
+        <title>Moniruzzaman Rumman | Best MERN Stack Web Developer</title>
+        <meta name="description" content="Portfolio of Moniruzzaman Rumman, a professional fullstack web developer specializing in the MERN stack. I build high-performance, modern, and beautiful web applications." />
+        <meta name="keywords" content="moniruzzaman, moniruzzaman rumman, md moniruzzaman, rumman, monir portfolio, monir github, monir linkedin, monir web developer, monir bogura, moniruzzaman bogura, best mern stack web developer, mern stack specialist, fullstack developer, professional web developer, mern stack developer near me, react developer, nextjs developer, professional it expert, best react developer, professional frontend developer, professional backend developer, hire mern stack developer, freelance web developer, remote react developer, top rated full stack developer, hire javascript developer, custom web app development, ui ux developer, web developer in bangladesh, bogura web developer, typescript expert, tailwind css expert, next.js specialist, api integration expert, backend engineer, frontend engineer, react, nodejs, web design" />
+      </Helmet>
+      <Hero />
+      <About />
+      <Skills />
+      <Experience />
+      <Projects />
+      <Certificates />
+      <Contact />
+    </>
+  );
+};
+
 // --- Main App ---
 
 export default function App() {
@@ -1440,41 +1430,40 @@ export default function App() {
   });
 
   return (
-    <div className="relative bg-[#030303]">
-      <Background3D />
+    <BrowserRouter>
+      <div className="relative bg-[#030303]">
+        <Background3D />
 
-      {/* Progress Bar */}
-      <motion.div
-        className="fixed top-0 left-0 right-0 h-1 bg-[#00FF00] origin-left z-[100]"
-        style={{ scaleX }}
-      />
-
-      <Navbar />
-
-      <main>
-        <Hero />
-        <About />
-        <Skills />
-        <Experience />
-        <Projects />
-        <Certificates />
-        <Contact />
-      </main>
-
-      <Footer />
-      <ScrollToTop />
-
-      {/* Custom Cursor */}
-      <div className="fixed inset-0 pointer-events-none z-[9999] hidden lg:block">
+        {/* Progress Bar */}
         <motion.div
-          className="w-8 h-8 border border-[#00FF00]/50 rounded-full absolute"
-          animate={{
-            x: -16,
-            y: -16,
-          }}
-          transition={{ type: "spring", damping: 20, stiffness: 150 }}
+          className="fixed top-0 left-0 right-0 h-1 bg-[#00FF00] origin-left z-[100]"
+          style={{ scaleX }}
         />
+
+        <Navbar />
+
+        <main>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/projects" element={<AllProjects />} />
+          </Routes>
+        </main>
+
+        <Footer />
+        <ScrollToTop />
+
+        {/* Custom Cursor */}
+        <div className="fixed inset-0 pointer-events-none z-[9999] hidden lg:block">
+          <motion.div
+            className="w-8 h-8 border border-[#00FF00]/50 rounded-full absolute"
+            animate={{
+              x: -16,
+              y: -16,
+            }}
+            transition={{ type: "spring", damping: 20, stiffness: 150 }}
+          />
+        </div>
       </div>
-    </div>
+    </BrowserRouter>
   );
 }
