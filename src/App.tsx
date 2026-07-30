@@ -46,7 +46,7 @@ import {
   ChevronLeft,
 } from "lucide-react";
 import { FaFacebook } from "react-icons/fa";
-import { BrowserRouter, Routes, Route, useNavigate, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useNavigate, useLocation, Link } from "react-router-dom";
 
 import { useInView } from "react-intersection-observer";
 import { clsx, type ClassValue } from "clsx";
@@ -96,9 +96,9 @@ const Navbar = () => {
   const location = useLocation();
 
   // ✅ Unified smooth scroll function
-  const handleScroll = (e, href) => {
+  const handleScroll = (e: any, href: string) => {
+    e.preventDefault();
     if (href.startsWith("/#")) {
-      e.preventDefault();
       const id = href.split("#")[1];
       setIsMobileMenuOpen(false);
 
@@ -118,6 +118,7 @@ const Navbar = () => {
       }
     } else {
         setIsMobileMenuOpen(false);
+        navigate(href);
     }
   };
 
