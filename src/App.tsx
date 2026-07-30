@@ -55,6 +55,7 @@ import { twMerge } from "tailwind-merge";
 import CountUp from "react-countup";
 import AllProjects from "./pages/AllProjects";
 import AllBlogs from "./pages/AllBlogs";
+import AllCertificates from "./pages/AllCertificates";
 import { GitHubCalendar } from "react-github-calendar";
 
 function cn(...inputs: ClassValue[]) {
@@ -90,6 +91,7 @@ const Navbar = () => {
     { name: "Experience", href: "/#experience" },
     { name: "Projects", href: "/projects" },
     { name: "Blogs", href: "/blogs" },
+    { name: "Certificates", href: "/certificates" },
     { name: "Contact", href: "/#contact" },
   ];
 
@@ -1194,6 +1196,13 @@ const Certificates = () => {
               Professional achievements and continuous learning milestones.
             </p>
           </div>
+          <Link
+            to="/certificates"
+            className="group flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-[#00FF00] hover:text-white transition-colors"
+          >
+            View All Certificates
+            <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
+          </Link>
         </div>
 
         <div className="relative group/scroll">
@@ -1626,6 +1635,7 @@ function AnimatedApp() {
             <Route path="/" element={<Home />} />
             <Route path="/projects" element={<AllProjects />} />
             <Route path="/blogs" element={<AllBlogs />} />
+            <Route path="/certificates" element={<AllCertificates />} />
           </Routes>
         </AnimatePresence>
       </main>
