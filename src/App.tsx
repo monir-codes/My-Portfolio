@@ -1574,9 +1574,9 @@ const Home = () => {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="bg-[#111] border border-white/10 rounded-3xl p-6 md:p-10 flex flex-col items-center justify-center overflow-x-auto overflow-y-hidden"
+              className="bg-[#111] border border-white/10 rounded-3xl p-6 md:p-10 overflow-x-auto hide-scrollbar"
             >
-              <div className="w-full max-w-[900px] min-w-[700px] flex justify-center text-[#00FF00]">
+              <div className="min-w-[800px] w-full flex md:justify-center text-[#00FF00]">
                 <GitHubCalendar
                   username="monir-codes"
                   colorScheme="dark"
