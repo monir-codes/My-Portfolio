@@ -870,12 +870,14 @@ const Projects = () => {
               of web development.
             </p>
           </div>
-          <button
-            onClick={redirectToAllProjects}
-            className="px-6 py-3 border border-white/20 rounded-full text-sm font-bold uppercase tracking-widest hover:bg-white/10 transition-colors"
+          <Link
+            to="/projects"
+            onClick={() => window.scrollTo(0, 0)}
+            className="group flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-[#00FF00] hover:text-white transition-colors"
           >
             View All Projects
-          </button>
+            <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
+          </Link>
         </div>
 
         {/* Custom Scroll Section */}
@@ -1089,15 +1091,14 @@ const BlogsPreview = () => {
             <h2 className="text-4xl md:text-5xl font-bold mb-3 tracking-tight">Latest <span className="text-[#00FF00]">Articles</span></h2>
             <p className="text-white/50 max-w-xl">Sharing my knowledge, thoughts, and technical tutorials.</p>
           </div>
-          <button
-            onClick={() => {
-              navigate("/blogs");
-              window.scrollTo(0, 0);
-            }}
-            className="px-6 py-3 border border-white/20 rounded-full text-sm font-bold uppercase tracking-widest hover:bg-white/10 transition-colors"
+          <Link
+            to="/blogs"
+            onClick={() => window.scrollTo(0, 0)}
+            className="group flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-[#00FF00] hover:text-white transition-colors"
           >
             View All Articles
-          </button>
+            <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
+          </Link>
         </div>
 
         {activeBlogs.length === 0 ? (
@@ -1198,15 +1199,14 @@ const Certificates = () => {
               Professional achievements and continuous learning milestones.
             </p>
           </div>
-          <button
-            onClick={() => {
-              navigate("/certificates");
-              window.scrollTo(0, 0);
-            }}
-            className="px-6 py-3 border border-white/20 rounded-full text-sm font-bold uppercase tracking-widest hover:bg-white/10 transition-colors"
+          <Link
+            to="/certificates"
+            onClick={() => window.scrollTo(0, 0)}
+            className="group flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-[#00FF00] hover:text-white transition-colors"
           >
             View All Certificates
-          </button>
+            <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
+          </Link>
         </div>
 
         <div className="relative group/scroll">
