@@ -18,7 +18,7 @@ export default function AllProjects() {
     fetch(`${apiUrl}/api/my-projects`)
       .then((res) => res.json())
       .then((data) => {
-        setProjects(data);
+        setProjects([...data].reverse());
         setLoading(false);
       })
       .catch((err) => {

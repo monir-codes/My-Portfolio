@@ -827,7 +827,7 @@ const Projects = () => {
     const apiUrl = import.meta.env.VITE_API_URL || "https://portfolio-server-ten-fawn.vercel.app";
     fetch(`${apiUrl}/api/my-projects`)
       .then((res) => res.json())
-      .then((data) => setProjects(data));
+      .then((data) => setProjects([...data].reverse()));
   }, []);
 
   const navigate = useNavigate();
