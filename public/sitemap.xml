@@ -15,4 +15,20 @@
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
+
+  <!-- All Blogs Page -->
+  <url>
+    <loc>https://monir-uzzaman.vercel.app/blogs</loc>
+    <lastmod>2026-07-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- All Certificates Page -->
+  <url>
+    <loc>https://monir-uzzaman.vercel.app/certificates</loc>
+    <lastmod>2026-07-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
 </urlset>
