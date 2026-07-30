@@ -53,6 +53,8 @@ import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import CountUp from "react-countup";
 import AllProjects from "./pages/AllProjects";
+import AllBlogs from "./pages/AllBlogs";
+import { GitHubCalendar } from "react-github-calendar";
 
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -82,13 +84,12 @@ const Navbar = () => {
   }, []);
 
   const navLinks = [
-    { name: "Home", href: "#home" },
-    { name: "About", href: "#about" },
-    { name: "Skills", href: "#skills" },
-    { name: "Experience", href: "#experience" },
-    { name: "Projects", href: "#projects" },
-    { name: "Certificates", href: "#certificates" },
-    { name: "Contact", href: "#contact" },
+    { name: "About", href: "/#about" },
+    { name: "Skills", href: "/#skills" },
+    { name: "Experience", href: "/#experience" },
+    { name: "Projects", href: "/projects" },
+    { name: "Blogs", href: "/blogs" },
+    { name: "Contact", href: "/#contact" },
   ];
 
   const navigate = useNavigate();
@@ -96,27 +97,27 @@ const Navbar = () => {
 
   // ✅ Unified smooth scroll function
   const handleScroll = (e, href) => {
-    e.preventDefault();
-    const id = href.replace("#", "");
-    
-    // 👇 close menu first
-    setIsMobileMenuOpen(false);
+    if (href.startsWith("/#")) {
+      e.preventDefault();
+      const id = href.split("#")[1];
+      setIsMobileMenuOpen(false);
 
-    if (location.pathname !== "/") {
-      navigate("/");
-      setTimeout(() => {
+      if (location.pathname !== "/") {
+        navigate("/");
+        setTimeout(() => {
+          const element = document.getElementById(id);
+          if (element) {
+            element.scrollIntoView({ behavior: "smooth", block: "start" });
+          }
+        }, 300);
+      } else {
         const element = document.getElementById(id);
         if (element) {
           element.scrollIntoView({ behavior: "smooth", block: "start" });
         }
-      }, 300);
+      }
     } else {
-      setTimeout(() => {
-        const element = document.getElementById(id);
-        if (element) {
-          element.scrollIntoView({ behavior: "smooth", block: "start" });
-        }
-      }, 150);
+        setIsMobileMenuOpen(false);
     }
   };
 
@@ -136,7 +137,7 @@ const Navbar = () => {
           animate={{ opacity: 1, x: 0 }}
           className="text-2xl font-bold tracking-tighter"
         >
-          MONIR<span className="text-[#00FF00]">.</span>
+          <Link to="/">MONIR<span className="text-[#00FF00]">.</span></Link>
         </motion.div>
 
         {/* Desktop Nav */}
@@ -1404,24 +1405,140 @@ const Home = () => {
   return (
     <>
       <Helmet>
-        <title>Moniruzzaman Rumman | Best MERN Stack Web Developer</title>
+        <title>Moniruzzaman Rumman | Professional Fullstack MERN Developer</title>
         <meta name="description" content="Portfolio of Moniruzzaman Rumman, a professional fullstack web developer specializing in the MERN stack. I build high-performance, modern, and beautiful web applications." />
         <meta name="keywords" content="moniruzzaman, moniruzzaman rumman, md moniruzzaman, rumman, monir portfolio, monir github, monir linkedin, monir web developer, monir bogura, moniruzzaman bogura, best mern stack web developer, mern stack specialist, fullstack developer, professional web developer, mern stack developer near me, react developer, nextjs developer, professional it expert, best react developer, professional frontend developer, professional backend developer, hire mern stack developer, freelance web developer, remote react developer, top rated full stack developer, hire javascript developer, custom web app development, ui ux developer, web developer in bangladesh, bogura web developer, typescript expert, tailwind css expert, next.js specialist, api integration expert, backend engineer, frontend engineer, react, nodejs, web design" />
       </Helmet>
-      <Hero />
-      <About />
-      <Skills />
-      <Experience />
-      <Projects />
-      <Certificates />
-      <Contact />
+      
+      {/* Framer Motion page wrapper for transitions */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -20 }}
+        transition={{ duration: 0.5, ease: "easeInOut" }}
+      >
+        <Hero />
+        <About />
+        <Skills />
+        
+        {/* GitHub Activity Section */}
+        <section className="py-16 relative overflow-hidden bg-[#0a0a0a]">
+          <div className="container mx-auto px-8 md:px-10 lg:px-24 xl:px-32 w-full">
+            <div className="mb-10 text-center">
+              <h2 className="text-3xl md:text-4xl font-bold mb-3 tracking-tight">Open Source <span className="text-[#00FF00]">Contributions</span></h2>
+              <p className="text-white/50 text-sm">Consistency is key. Here's a snapshot of my coding activity.</p>
+            </div>
+            
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="bg-[#111] border border-white/10 rounded-3xl p-6 md:p-10 flex flex-col items-center justify-center overflow-x-auto overflow-y-hidden"
+            >
+              <div className="w-full max-w-[900px] min-w-[700px] flex justify-center text-[#00FF00]">
+                <GitHubCalendar 
+                  username="monir-codes" 
+                  colorScheme="dark"
+                  theme={{
+                    light: ['#161b22', '#0e4429', '#006d32', '#26a641', '#39d353'],
+                    dark: ['#161b22', '#0e4429', '#006d32', '#26a641', '#39d353'],
+                  }}
+                  fontSize={14}
+                  blockSize={12}
+                  blockMargin={4}
+                  blockRadius={2}
+                />
+              </div>
+            </motion.div>
+          </div>
+        </section>
+
+        <Experience />
+        <Projects />
+        
+        {/* Latest Blogs Preview Section */}
+        <section className="py-24 relative bg-[#0a0a0a]">
+          <div className="container mx-auto px-8 md:px-10 lg:px-24 xl:px-32 w-full">
+            <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+              <div>
+                <h2 className="text-4xl md:text-5xl font-bold mb-3 tracking-tight">Latest <span className="text-[#00FF00]">Articles</span></h2>
+                <p className="text-white/50 max-w-xl">Sharing my knowledge, thoughts, and technical tutorials.</p>
+              </div>
+              <Link 
+                to="/blogs" 
+                className="group flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-[#00FF00] hover:text-white transition-colors"
+              >
+                View All Articles
+                <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
+              </Link>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {/* Static Blog Card Preview */}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="group bg-white/5 border border-white/10 rounded-3xl overflow-hidden hover:border-[#00FF00]/30 transition-all hover:-translate-y-2 cursor-pointer"
+              >
+                <div className="h-48 bg-black overflow-hidden relative">
+                  <img src="https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=1000&auto=format&fit=crop" alt="Blog" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                </div>
+                <div className="p-6">
+                  <div className="text-[#00FF00] text-[10px] uppercase font-bold tracking-widest mb-3">Development</div>
+                  <h3 className="text-xl font-bold mb-3 line-clamp-2">Mastering the MERN Stack: A Complete Guide</h3>
+                  <p className="text-white/50 text-sm line-clamp-2">Learn how to build scalable and high-performance web applications using MongoDB, Express.js, React, and Node.js.</p>
+                </div>
+              </motion.div>
+              
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.1 }}
+                className="group bg-white/5 border border-white/10 rounded-3xl overflow-hidden hover:border-[#00FF00]/30 transition-all hover:-translate-y-2 cursor-pointer"
+              >
+                <div className="h-48 bg-black overflow-hidden relative">
+                  <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1000&auto=format&fit=crop" alt="Blog" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                </div>
+                <div className="p-6">
+                  <div className="text-[#00FF00] text-[10px] uppercase font-bold tracking-widest mb-3">React</div>
+                  <h3 className="text-xl font-bold mb-3 line-clamp-2">Why React is the Future of Frontend UI</h3>
+                  <p className="text-white/50 text-sm line-clamp-2">An in-depth analysis of why React continues to dominate the frontend ecosystem and how it has evolved with Server Components.</p>
+                </div>
+              </motion.div>
+              
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.2 }}
+                className="group bg-white/5 border border-white/10 rounded-3xl overflow-hidden hover:border-[#00FF00]/30 transition-all hover:-translate-y-2 cursor-pointer hidden md:block"
+              >
+                <div className="h-48 bg-black overflow-hidden relative">
+                  <img src="https://images.unsplash.com/photo-1507721999472-8ed4421c4af2?q=80&w=1000&auto=format&fit=crop" alt="Blog" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                </div>
+                <div className="p-6">
+                  <div className="text-[#00FF00] text-[10px] uppercase font-bold tracking-widest mb-3">Design</div>
+                  <h3 className="text-xl font-bold mb-3 line-clamp-2">Advanced Tailwind CSS Techniques</h3>
+                  <p className="text-white/50 text-sm line-clamp-2">Move beyond basic utility classes. Learn how to build a scalable design system using Tailwind CSS, CSS variables, and plugins.</p>
+                </div>
+              </motion.div>
+            </div>
+          </div>
+        </section>
+
+        <Certificates />
+        <Contact />
+      </motion.div>
     </>
   );
 };
 
 // --- Main App ---
 
-export default function App() {
+function AnimatedApp() {
+  const location = useLocation();
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
     stiffness: 100,
@@ -1430,40 +1547,49 @@ export default function App() {
   });
 
   return (
-    <BrowserRouter>
-      <div className="relative bg-[#030303]">
-        <Background3D />
+    <div className="relative bg-[#030303]">
+      <Background3D />
 
-        {/* Progress Bar */}
-        <motion.div
-          className="fixed top-0 left-0 right-0 h-1 bg-[#00FF00] origin-left z-[100]"
-          style={{ scaleX }}
-        />
+      {/* Progress Bar */}
+      <motion.div
+        className="fixed top-0 left-0 right-0 h-1 bg-[#00FF00] origin-left z-[100]"
+        style={{ scaleX }}
+      />
 
-        <Navbar />
+      <Navbar />
 
-        <main>
-          <Routes>
+      <main>
+        <AnimatePresence mode="wait">
+          <Routes location={location} key={location.pathname}>
             <Route path="/" element={<Home />} />
             <Route path="/projects" element={<AllProjects />} />
+            <Route path="/blogs" element={<AllBlogs />} />
           </Routes>
-        </main>
+        </AnimatePresence>
+      </main>
 
-        <Footer />
-        <ScrollToTop />
+      <Footer />
+      <ScrollToTop />
 
-        {/* Custom Cursor */}
-        <div className="fixed inset-0 pointer-events-none z-[9999] hidden lg:block">
-          <motion.div
-            className="w-8 h-8 border border-[#00FF00]/50 rounded-full absolute"
-            animate={{
-              x: -16,
-              y: -16,
-            }}
-            transition={{ type: "spring", damping: 20, stiffness: 150 }}
-          />
-        </div>
+      {/* Custom Cursor */}
+      <div className="fixed inset-0 pointer-events-none z-[9999] hidden lg:block">
+        <motion.div
+          className="w-8 h-8 border border-[#00FF00]/50 rounded-full absolute"
+          animate={{
+            x: -16,
+            y: -16,
+          }}
+          transition={{ type: "spring", damping: 20, stiffness: 150 }}
+        />
       </div>
+    </div>
+  );
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <AnimatedApp />
     </BrowserRouter>
   );
 }
