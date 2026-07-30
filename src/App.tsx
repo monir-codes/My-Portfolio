@@ -114,10 +114,12 @@ const Navbar = () => {
           }
         }, 300);
       } else {
-        const element = document.getElementById(id);
-        if (element) {
-          element.scrollIntoView({ behavior: "smooth", block: "start" });
-        }
+        setTimeout(() => {
+          const element = document.getElementById(id);
+          if (element) {
+            element.scrollIntoView({ behavior: "smooth", block: "start" });
+          }
+        }, isMobileMenuOpen ? 300 : 0);
       }
     } else {
       setIsMobileMenuOpen(false);
