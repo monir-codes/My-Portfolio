@@ -1,47 +1,36 @@
-import React, { useEffect } from "react";
-import { motion } from "motion/react";
-import { ArrowLeft, BookOpen, Clock, ArrowRight } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "motion/react";
+import { ArrowLeft, BookOpen, Clock, ArrowRight, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 
-const MOCK_BLOGS = [
-  {
-    id: 1,
-    title: "Mastering the MERN Stack: A Complete Guide",
-    excerpt: "Learn how to build scalable and high-performance web applications using MongoDB, Express.js, React, and Node.js from scratch.",
-    date: "Aug 15, 2026",
-    readTime: "8 min read",
-    category: "Development",
-    image: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=1000&auto=format&fit=crop",
-    link: "#"
-  },
-  {
-    id: 2,
-    title: "Why React is the Future of Frontend UI",
-    excerpt: "An in-depth analysis of why React continues to dominate the frontend ecosystem and how it has evolved with Server Components.",
-    date: "Sep 02, 2026",
-    readTime: "6 min read",
-    category: "React",
-    image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1000&auto=format&fit=crop",
-    link: "#"
-  },
-  {
-    id: 3,
-    title: "Advanced Tailwind CSS Techniques",
-    excerpt: "Move beyond basic utility classes. Learn how to build a scalable design system using Tailwind CSS, CSS variables, and plugins.",
-    date: "Oct 12, 2026",
-    readTime: "5 min read",
-    category: "Design",
-    image: "https://images.unsplash.com/photo-1507721999472-8ed4421c4af2?q=80&w=1000&auto=format&fit=crop",
-    link: "#"
-  }
-];
-
 export default function AllBlogs() {
   const navigate = useNavigate();
+  const [blogs, setBlogs] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedBlog, setSelectedBlog] = useState<any | null>(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    fetch(`${import.meta.env.VITE_API_URL || "https://portfolio-server-ten-fawn.vercel.app"}/api/blogs`)
+      .then(r => r.json())
+      .then(d => {
+        setBlogs(d);
+        setLoading(false);
+      })
+      .catch(e => {
+        console.error(e);
+        setLoading(false);
+      });
+  }, []);
+
+  // Handle ESC key to close modal
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setSelectedBlog(null);
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
   return (
@@ -51,6 +40,60 @@ export default function AllBlogs() {
         <meta name="description" content="Read the latest articles on web development, MERN stack, React, and modern UI/UX design by Md. Moniruzzaman." />
       </Helmet>
       
+      {/* Article Reading Modal */}
+      <AnimatePresence>
+        {selectedBlog && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8 bg-black/80 backdrop-blur-md overflow-y-auto"
+            onClick={() => setSelectedBlog(null)}
+          >
+            <motion.div
+              initial={{ opacity: 0, y: 50, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 20, scale: 0.95 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              onClick={(e) => e.stopPropagation()}
+              className="w-full max-w-4xl bg-[#111] border border-white/10 rounded-3xl overflow-hidden shadow-2xl relative my-auto max-h-[90vh] flex flex-col"
+            >
+              <button 
+                onClick={() => setSelectedBlog(null)}
+                className="absolute top-4 right-4 z-10 p-2 bg-black/50 hover:bg-[#00FF00] hover:text-black rounded-full text-white backdrop-blur-md transition-all"
+              >
+                <X size={24} />
+              </button>
+              
+              {/* Modal Cover Image */}
+              {selectedBlog.image && (
+                <div className="w-full h-64 md:h-80 shrink-0 relative">
+                  <img src={selectedBlog.image} alt={selectedBlog.title} className="w-full h-full object-cover" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#111] to-transparent" />
+                </div>
+              )}
+              
+              <div className="p-6 md:p-10 overflow-y-auto custom-scrollbar flex-1">
+                <div className="flex items-center gap-4 text-xs font-bold uppercase tracking-wider text-[#00FF00] mb-4">
+                  <span className="px-3 py-1 bg-[#00FF00]/10 rounded-full">{selectedBlog.category || "General"}</span>
+                  <span className="text-white/40 flex items-center gap-1.5"><Clock size={14} /> {selectedBlog.date}</span>
+                  <span className="text-white/40 flex items-center gap-1.5"><BookOpen size={14} /> {selectedBlog.readTime}</span>
+                </div>
+                
+                <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-8 tracking-tight leading-tight">{selectedBlog.title}</h2>
+                
+                <div className="prose prose-invert prose-lg max-w-none prose-p:text-white/70 prose-headings:text-white prose-a:text-[#00FF00]">
+                  {/* Using whitespace-pre-wrap to respect line breaks from the textarea */}
+                  <div className="whitespace-pre-wrap text-white/80 leading-relaxed font-medium">
+                    {selectedBlog.content}
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Framer Motion page wrapper for transitions */}
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
@@ -78,52 +121,70 @@ export default function AllBlogs() {
           </div>
 
           {/* Blog Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {MOCK_BLOGS.map((blog, i) => (
-              <motion.article
-                key={blog.id}
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.1, duration: 0.5 }}
-                className="group flex flex-col bg-white/5 backdrop-blur-md rounded-3xl overflow-hidden border border-white/10 hover:border-[#00FF00]/40 transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_10px_30px_rgba(0,255,0,0.1)]"
-              >
-                {/* Image Section */}
-                <div className="h-[240px] overflow-hidden bg-black relative">
-                  <img
-                    src={blog.image}
-                    alt={blog.title}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-60" />
-                  <div className="absolute top-4 left-4 px-3 py-1 bg-black/60 backdrop-blur-md border border-white/10 rounded-full text-[9px] uppercase font-bold tracking-widest text-[#00FF00]">
-                    {blog.category}
+          {loading ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+               {[1, 2, 3].map(i => (
+                 <div key={i} className="h-96 rounded-3xl bg-white/5 animate-pulse" />
+               ))}
+            </div>
+          ) : blogs.length === 0 ? (
+            <div className="py-20 text-center border border-white/10 rounded-3xl border-dashed">
+               <h3 className="text-2xl font-bold mb-2">No articles published</h3>
+               <p className="text-white/50">Check back later for exciting tech content.</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {blogs.map((blog, i) => (
+                <motion.article
+                  key={blog._id || i}
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.1, duration: 0.5 }}
+                  onClick={() => setSelectedBlog(blog)}
+                  className="group flex flex-col bg-white/5 backdrop-blur-md rounded-3xl overflow-hidden border border-white/10 hover:border-[#00FF00]/40 transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_10px_30px_rgba(0,255,0,0.1)] cursor-pointer"
+                >
+                  {/* Image Section */}
+                  <div className="h-[240px] overflow-hidden bg-black relative">
+                    {blog.image ? (
+                      <img
+                        src={blog.image}
+                        alt={blog.title}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-white/20 bg-gradient-to-br from-white/5 to-transparent">No Cover Image</div>
+                    )}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-60" />
+                    <div className="absolute top-4 left-4 px-3 py-1 bg-black/60 backdrop-blur-md border border-white/10 rounded-full text-[9px] uppercase font-bold tracking-widest text-[#00FF00]">
+                      {blog.category || "General"}
+                    </div>
                   </div>
-                </div>
 
-                {/* Content Section */}
-                <div className="p-6 md:p-8 flex-1 flex flex-col relative z-10 bg-gradient-to-b from-transparent to-black/20">
-                  <div className="flex items-center gap-4 text-xs font-bold uppercase tracking-wider text-white/40 mb-4">
-                    <span className="flex items-center gap-1.5"><Clock size={14} /> {blog.date}</span>
-                    <span>•</span>
-                    <span className="flex items-center gap-1.5"><BookOpen size={14} /> {blog.readTime}</span>
+                  {/* Content Section */}
+                  <div className="p-6 md:p-8 flex-1 flex flex-col relative z-10 bg-gradient-to-b from-transparent to-black/20">
+                    <div className="flex items-center gap-4 text-xs font-bold uppercase tracking-wider text-white/40 mb-4">
+                      <span className="flex items-center gap-1.5"><Clock size={14} /> {blog.date}</span>
+                      <span>•</span>
+                      <span className="flex items-center gap-1.5"><BookOpen size={14} /> {blog.readTime}</span>
+                    </div>
+                    
+                    <h3 className="text-xl md:text-2xl font-bold mb-3 group-hover:text-[#00FF00] transition-colors leading-tight">
+                      {blog.title}
+                    </h3>
+                    
+                    <p className="text-white/60 text-sm mb-6 line-clamp-3 leading-relaxed flex-1">
+                      {blog.excerpt}
+                    </p>
+                    
+                    <button className="flex items-center gap-2 text-[#00FF00] font-bold text-sm uppercase tracking-widest group/btn mt-auto">
+                      Read Article 
+                      <ArrowRight size={16} className="transition-transform group-hover/btn:translate-x-1" />
+                    </button>
                   </div>
-                  
-                  <h3 className="text-xl md:text-2xl font-bold mb-3 group-hover:text-[#00FF00] transition-colors leading-tight">
-                    {blog.title}
-                  </h3>
-                  
-                  <p className="text-white/60 text-sm mb-6 line-clamp-3 leading-relaxed flex-1">
-                    {blog.excerpt}
-                  </p>
-                  
-                  <button className="flex items-center gap-2 text-[#00FF00] font-bold text-sm uppercase tracking-widest group/btn mt-auto">
-                    Read Article 
-                    <ArrowRight size={16} className="transition-transform group-hover/btn:translate-x-1" />
-                  </button>
-                </div>
-              </motion.article>
-            ))}
-          </div>
+                </motion.article>
+              ))}
+            </div>
+          )}
 
         </div>
       </motion.div>

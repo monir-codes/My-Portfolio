@@ -44,6 +44,7 @@ import {
   Rocket,
   Award,
   ChevronLeft,
+  ArrowRight,
 } from "lucide-react";
 import { FaFacebook } from "react-icons/fa";
 import { BrowserRouter, Routes, Route, useNavigate, useLocation, Link } from "react-router-dom";
@@ -117,8 +118,8 @@ const Navbar = () => {
         }
       }
     } else {
-        setIsMobileMenuOpen(false);
-        navigate(href);
+      setIsMobileMenuOpen(false);
+      navigate(href);
     }
   };
 
@@ -647,10 +648,10 @@ const Skills = () => {
 
   const [apiSkills, setApiSkills] = useState<any[]>([]);
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL || "https://portfolio-server-ten-fawn.vercel.app"}/api/skills`).then(r=>r.json()).then(d=>setApiSkills(d));
+    fetch(`${import.meta.env.VITE_API_URL || "https://portfolio-server-ten-fawn.vercel.app"}/api/skills`).then(r => r.json()).then(d => setApiSkills(d));
   }, []);
   const activeSkills = apiSkills.length > 0 ? apiSkills : skills;
-  
+
   const IconMap: any = {
     Code2, Layout, Box, Server, Terminal, Database, Cloud, Wind, Zap, Webhook, GitBranch, Github, Figma, Rocket, Cpu
   };
@@ -694,49 +695,50 @@ const Skills = () => {
             };
 
             return (
-            <motion.div
-              key={skill.name}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.05 }}
-              className="group relative p-6 md:p-8 rounded-3xl bg-white/5 backdrop-blur-md border border-white/10 overflow-hidden hover:border-[#00FF00]/30 hover:shadow-lg hover:shadow-[#00FF00]/10 transition-all"
-            >
-              {/* glow background */}
-              <div className="absolute inset-0 bg-gradient-to-br from-[#00FF00]/10 to-transparent opacity-0 group-hover:opacity-100 transition" />
+              <motion.div
+                key={skill.name}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.05 }}
+                className="group relative p-6 md:p-8 rounded-3xl bg-white/5 backdrop-blur-md border border-white/10 overflow-hidden hover:border-[#00FF00]/30 hover:shadow-lg hover:shadow-[#00FF00]/10 transition-all"
+              >
+                {/* glow background */}
+                <div className="absolute inset-0 bg-gradient-to-br from-[#00FF00]/10 to-transparent opacity-0 group-hover:opacity-100 transition" />
 
-              {/* BIG ICON BACKGROUND */}
-              <div className="absolute top-4 right-4 opacity-10 group-hover:opacity-20 transition">
-                {RenderedIconLarge}
-              </div>
-
-              <div className="relative z-10">
-                <div className="flex items-center gap-4 mb-6">
-                  <div className="p-3 bg-black rounded-xl border border-white/10 group-hover:scale-110 transition">
-                    {RenderedIcon}
-                  </div>
-                  <h3 className="text-lg font-bold">{skill.name}</h3>
+                {/* BIG ICON BACKGROUND */}
+                <div className="absolute top-4 right-4 opacity-10 group-hover:opacity-20 transition">
+                  {RenderedIconLarge}
                 </div>
 
-                <div className="space-y-2">
-                  <div className="flex justify-between text-sm">
-                    <span className="text-white/40">Proficiency</span>
-                    <span className="text-[#00FF00] font-semibold">{getProficiencyText(skill.level)}</span>
+                <div className="relative z-10">
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="p-3 bg-black rounded-xl border border-white/10 group-hover:scale-110 transition">
+                      {RenderedIcon}
+                    </div>
+                    <h3 className="text-lg font-bold">{skill.name}</h3>
                   </div>
 
-                  <div className="h-2 w-full bg-white/10 rounded-full overflow-hidden">
-                    <motion.div
-                      initial={{ width: 0 }}
-                      whileInView={{ width: "100%" }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 1 }}
-                      className="h-full bg-gradient-to-r from-[#00FF00] to-emerald-400"
-                    />
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-sm">
+                      <span className="text-white/40">Proficiency</span>
+                      <span className="text-[#00FF00] font-semibold">{getProficiencyText(skill.level)}</span>
+                    </div>
+
+                    <div className="h-2 w-full bg-white/10 rounded-full overflow-hidden">
+                      <motion.div
+                        initial={{ width: 0 }}
+                        whileInView={{ width: "100%" }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 1 }}
+                        className="h-full bg-gradient-to-r from-[#00FF00] to-emerald-400"
+                      />
+                    </div>
                   </div>
                 </div>
-              </div>
-            </motion.div>
-          )})}
+              </motion.div>
+            )
+          })}
         </div>
       </div>
     </section>
@@ -746,7 +748,7 @@ const Skills = () => {
 const Experience = () => {
   const [apiExp, setApiExp] = useState<any[]>([]);
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL || "https://portfolio-server-ten-fawn.vercel.app"}/api/experience`).then(r=>r.json()).then(d=>setApiExp(d));
+    fetch(`${import.meta.env.VITE_API_URL || "https://portfolio-server-ten-fawn.vercel.app"}/api/experience`).then(r => r.json()).then(d => setApiExp(d));
   }, []);
   const activeExperiences = apiExp.length > 0 ? apiExp : [
 
@@ -778,8 +780,8 @@ const Experience = () => {
 
         <div className="relative border-l border-white/10 ml-4 md:ml-10 space-y-8 lg:space-y-6 xl:space-y-8 max-w-4xl mx-auto">
           {activeExperiences.map((exp, i) => (
-            <motion.div 
-              key={i} 
+            <motion.div
+              key={i}
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
@@ -878,28 +880,28 @@ const Projects = () => {
 
         {/* Custom Scroll Section */}
         <div className="relative group/scroll">
-          <button 
+          <button
             onClick={scrollLeft}
-            className="absolute -left-4 md:-left-8 top-1/2 -translate-y-1/2 z-20 p-3 bg-black/60 border border-white/20 rounded-full text-white backdrop-blur-md opacity-0 group-hover/scroll:opacity-100 transition-opacity hover:bg-[#00FF00] hover:text-black hover:border-transparent hidden sm:block shadow-xl"
+            className="absolute left-2 md:-left-8 top-1/2 -translate-y-1/2 z-20 p-2 md:p-3 bg-black/60 border border-white/20 rounded-full text-white backdrop-blur-md opacity-60 sm:opacity-0 group-hover/scroll:opacity-100 transition-opacity hover:bg-[#00FF00] hover:text-black hover:border-transparent shadow-xl"
           >
-            <ChevronLeft size={24} />
-          </button>
-          
-          <button 
-            onClick={scrollRight}
-            className="absolute -right-4 md:-right-8 top-1/2 -translate-y-1/2 z-20 p-3 bg-black/60 border border-white/20 rounded-full text-white backdrop-blur-md opacity-0 group-hover/scroll:opacity-100 transition-opacity hover:bg-[#00FF00] hover:text-black hover:border-transparent hidden sm:block shadow-xl"
-          >
-            <ChevronRight size={24} />
+            <ChevronLeft className="w-5 h-5 md:w-6 md:h-6" />
           </button>
 
-          <div 
+          <button
+            onClick={scrollRight}
+            className="absolute right-2 md:-right-8 top-1/2 -translate-y-1/2 z-20 p-2 md:p-3 bg-black/60 border border-white/20 rounded-full text-white backdrop-blur-md opacity-60 sm:opacity-0 group-hover/scroll:opacity-100 transition-opacity hover:bg-[#00FF00] hover:text-black hover:border-transparent shadow-xl"
+          >
+            <ChevronRight className="w-5 h-5 md:w-6 md:h-6" />
+          </button>
+
+          <div
             ref={scrollRef}
             className="flex overflow-x-auto gap-6 pb-12 snap-x snap-mandatory hide-scrollbar relative z-10"
             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
           >
             {projects.map((project: any, i) => (
-              <div 
-                key={i} 
+              <div
+                key={i}
                 className="snap-center shrink-0 w-[85vw] sm:w-[400px] lg:w-[450px]"
               >
                 <div
@@ -918,7 +920,7 @@ const Projects = () => {
                       {project.category || "Project"}
                     </div>
                   </div>
-                  
+
                   <div className="p-6 flex-1 flex flex-col relative z-10 bg-gradient-to-b from-black/40 to-transparent">
                     <h3 className="text-xl font-bold truncate group-hover:text-[#00FF00] transition-colors mb-3">
                       {project.title}
@@ -1061,10 +1063,80 @@ const Projects = () => {
   );
 };
 
+const BlogsPreview = () => {
+  const navigate = useNavigate();
+  const [apiBlogs, setApiBlogs] = useState<any[]>([]);
+  useEffect(() => {
+    fetch(`${import.meta.env.VITE_API_URL || "https://portfolio-server-ten-fawn.vercel.app"}/api/blogs`).then(r => r.json()).then(d => setApiBlogs(d));
+  }, []);
+  
+  const activeBlogs = apiBlogs.length > 0 ? apiBlogs.slice(0, 3) : [];
+
+  return (
+    <section className="py-24 relative bg-[#0a0a0a]">
+      <div className="container mx-auto px-8 md:px-10 lg:px-24 xl:px-32 w-full">
+        <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+          <div>
+            <h2 className="text-4xl md:text-5xl font-bold mb-3 tracking-tight">Latest <span className="text-[#00FF00]">Articles</span></h2>
+            <p className="text-white/50 max-w-xl">Sharing my knowledge, thoughts, and technical tutorials.</p>
+          </div>
+          <Link
+            to="/blogs"
+            className="group flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-[#00FF00] hover:text-white transition-colors"
+          >
+            View All Articles
+            <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
+          </Link>
+        </div>
+
+        {activeBlogs.length === 0 ? (
+          <div className="py-12 border border-white/10 border-dashed rounded-3xl text-center">
+            <p className="text-white/40">No articles published yet.</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {activeBlogs.map((blog, i) => (
+              <motion.div
+                key={blog._id}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                onClick={() => navigate('/blogs')}
+                className="group bg-white/5 border border-white/10 rounded-3xl overflow-hidden hover:border-[#00FF00]/30 transition-all hover:-translate-y-2 cursor-pointer"
+              >
+                <div className="h-48 bg-black overflow-hidden relative">
+                  {blog.image ? (
+                    <img src={blog.image} alt={blog.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                  ) : (
+                    <div className="w-full h-full bg-white/5 flex items-center justify-center text-white/20">No Cover</div>
+                  )}
+                </div>
+                <div className="p-6 flex flex-col justify-between h-[200px]">
+                  <div>
+                    <div className="text-[#00FF00] text-[10px] uppercase font-bold tracking-widest mb-3">{blog.category || "General"}</div>
+                    <h3 className="text-xl font-bold mb-3 line-clamp-2">{blog.title}</h3>
+                    <p className="text-white/50 text-sm line-clamp-2">{blog.excerpt}</p>
+                  </div>
+                  <div className="mt-4 flex items-center gap-3 text-xs text-white/40 font-semibold">
+                    <span>{blog.date}</span>
+                    <span className="w-1 h-1 rounded-full bg-white/20" />
+                    <span>{blog.readTime}</span>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        )}
+      </div>
+    </section>
+  );
+};
+
 const Certificates = () => {
   const [apiCerts, setApiCerts] = useState<any[]>([]);
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL || "https://portfolio-server-ten-fawn.vercel.app"}/api/certificates`).then(r=>r.json()).then(d=>setApiCerts(d));
+    fetch(`${import.meta.env.VITE_API_URL || "https://portfolio-server-ten-fawn.vercel.app"}/api/certificates`).then(r => r.json()).then(d => setApiCerts(d));
   }, []);
   const activeCerts = apiCerts.length > 0 ? apiCerts : [
 
@@ -1097,25 +1169,25 @@ const Certificates = () => {
               className="group relative bg-white/5 backdrop-blur-md rounded-3xl overflow-hidden border border-white/10 hover:border-[#00FF00]/40 transition-all hover:shadow-lg hover:shadow-[#00FF00]/10"
             >
               <div className="absolute inset-0 bg-gradient-to-br from-[#00FF00]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              
+
               <div className="aspect-[16/9] overflow-hidden bg-[#111] p-6 flex items-center justify-center relative">
                 <div className="absolute inset-0 bg-grid opacity-20" />
                 <div className="w-full h-full border-2 border-white/10 rounded-xl relative overflow-hidden group-hover:scale-105 transition-transform duration-700 bg-gradient-to-br from-black to-white/5 flex flex-col items-center justify-center p-6 text-center shadow-2xl">
-                    <div className="w-16 h-16 rounded-full bg-[#00FF00]/10 flex items-center justify-center mb-4 border border-[#00FF00]/30 shadow-[0_0_15px_rgba(0,255,0,0.2)]">
-                      <Award className="text-[#00FF00]" size={28} />
-                    </div>
-                    <h3 className="text-xl md:text-2xl font-black mb-2 tracking-tight text-white/90">{cert.title}</h3>
-                    <p className="text-white/40 text-[10px] md:text-xs font-bold uppercase tracking-[0.2em]">{cert.issuer}</p>
+                  <div className="w-16 h-16 rounded-full bg-[#00FF00]/10 flex items-center justify-center mb-4 border border-[#00FF00]/30 shadow-[0_0_15px_rgba(0,255,0,0.2)]">
+                    <Award className="text-[#00FF00]" size={28} />
+                  </div>
+                  <h3 className="text-xl md:text-2xl font-black mb-2 tracking-tight text-white/90">{cert.title}</h3>
+                  <p className="text-white/40 text-[10px] md:text-xs font-bold uppercase tracking-[0.2em]">{cert.issuer}</p>
                 </div>
               </div>
-              
+
               <div className="p-6 md:p-8 relative z-10 bg-black/40 border-t border-white/5">
                 <div className="flex justify-between items-center">
                   <div>
                     <h4 className="text-lg font-bold text-white mb-1">{cert.title}</h4>
                     <p className="text-[#00FF00] text-xs font-bold uppercase tracking-widest">{cert.issuer} • {cert.date}</p>
                   </div>
-                  <button 
+                  <button
                     onClick={() => window.open(cert.link, "_blank")}
                     className="p-3 bg-white/10 rounded-full hover:bg-[#00FF00] hover:text-black transition-colors"
                   >
@@ -1410,7 +1482,7 @@ const Home = () => {
         <meta name="description" content="Portfolio of Moniruzzaman Rumman, a professional fullstack web developer specializing in the MERN stack. I build high-performance, modern, and beautiful web applications." />
         <meta name="keywords" content="moniruzzaman, moniruzzaman rumman, md moniruzzaman, rumman, monir portfolio, monir github, monir linkedin, monir web developer, monir bogura, moniruzzaman bogura, best mern stack web developer, mern stack specialist, fullstack developer, professional web developer, mern stack developer near me, react developer, nextjs developer, professional it expert, best react developer, professional frontend developer, professional backend developer, hire mern stack developer, freelance web developer, remote react developer, top rated full stack developer, hire javascript developer, custom web app development, ui ux developer, web developer in bangladesh, bogura web developer, typescript expert, tailwind css expert, next.js specialist, api integration expert, backend engineer, frontend engineer, react, nodejs, web design" />
       </Helmet>
-      
+
       {/* Framer Motion page wrapper for transitions */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -1421,7 +1493,7 @@ const Home = () => {
         <Hero />
         <About />
         <Skills />
-        
+
         {/* GitHub Activity Section */}
         <section className="py-16 relative overflow-hidden bg-[#0a0a0a]">
           <div className="container mx-auto px-8 md:px-10 lg:px-24 xl:px-32 w-full">
@@ -1429,16 +1501,16 @@ const Home = () => {
               <h2 className="text-3xl md:text-4xl font-bold mb-3 tracking-tight">Open Source <span className="text-[#00FF00]">Contributions</span></h2>
               <p className="text-white/50 text-sm">Consistency is key. Here's a snapshot of my coding activity.</p>
             </div>
-            
-            <motion.div 
+
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               className="bg-[#111] border border-white/10 rounded-3xl p-6 md:p-10 flex flex-col items-center justify-center overflow-x-auto overflow-y-hidden"
             >
               <div className="w-full max-w-[900px] min-w-[700px] flex justify-center text-[#00FF00]">
-                <GitHubCalendar 
-                  username="monir-codes" 
+                <GitHubCalendar
+                  username="monir-codes"
                   colorScheme="dark"
                   theme={{
                     light: ['#161b22', '#0e4429', '#006d32', '#26a641', '#39d353'],
@@ -1456,78 +1528,8 @@ const Home = () => {
 
         <Experience />
         <Projects />
-        
-        {/* Latest Blogs Preview Section */}
-        <section className="py-24 relative bg-[#0a0a0a]">
-          <div className="container mx-auto px-8 md:px-10 lg:px-24 xl:px-32 w-full">
-            <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
-              <div>
-                <h2 className="text-4xl md:text-5xl font-bold mb-3 tracking-tight">Latest <span className="text-[#00FF00]">Articles</span></h2>
-                <p className="text-white/50 max-w-xl">Sharing my knowledge, thoughts, and technical tutorials.</p>
-              </div>
-              <Link 
-                to="/blogs" 
-                className="group flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-[#00FF00] hover:text-white transition-colors"
-              >
-                View All Articles
-                <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
-              </Link>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {/* Static Blog Card Preview */}
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                className="group bg-white/5 border border-white/10 rounded-3xl overflow-hidden hover:border-[#00FF00]/30 transition-all hover:-translate-y-2 cursor-pointer"
-              >
-                <div className="h-48 bg-black overflow-hidden relative">
-                  <img src="https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=1000&auto=format&fit=crop" alt="Blog" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-                </div>
-                <div className="p-6">
-                  <div className="text-[#00FF00] text-[10px] uppercase font-bold tracking-widest mb-3">Development</div>
-                  <h3 className="text-xl font-bold mb-3 line-clamp-2">Mastering the MERN Stack: A Complete Guide</h3>
-                  <p className="text-white/50 text-sm line-clamp-2">Learn how to build scalable and high-performance web applications using MongoDB, Express.js, React, and Node.js.</p>
-                </div>
-              </motion.div>
-              
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.1 }}
-                className="group bg-white/5 border border-white/10 rounded-3xl overflow-hidden hover:border-[#00FF00]/30 transition-all hover:-translate-y-2 cursor-pointer"
-              >
-                <div className="h-48 bg-black overflow-hidden relative">
-                  <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1000&auto=format&fit=crop" alt="Blog" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-                </div>
-                <div className="p-6">
-                  <div className="text-[#00FF00] text-[10px] uppercase font-bold tracking-widest mb-3">React</div>
-                  <h3 className="text-xl font-bold mb-3 line-clamp-2">Why React is the Future of Frontend UI</h3>
-                  <p className="text-white/50 text-sm line-clamp-2">An in-depth analysis of why React continues to dominate the frontend ecosystem and how it has evolved with Server Components.</p>
-                </div>
-              </motion.div>
-              
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.2 }}
-                className="group bg-white/5 border border-white/10 rounded-3xl overflow-hidden hover:border-[#00FF00]/30 transition-all hover:-translate-y-2 cursor-pointer hidden md:block"
-              >
-                <div className="h-48 bg-black overflow-hidden relative">
-                  <img src="https://images.unsplash.com/photo-1507721999472-8ed4421c4af2?q=80&w=1000&auto=format&fit=crop" alt="Blog" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-                </div>
-                <div className="p-6">
-                  <div className="text-[#00FF00] text-[10px] uppercase font-bold tracking-widest mb-3">Design</div>
-                  <h3 className="text-xl font-bold mb-3 line-clamp-2">Advanced Tailwind CSS Techniques</h3>
-                  <p className="text-white/50 text-sm line-clamp-2">Move beyond basic utility classes. Learn how to build a scalable design system using Tailwind CSS, CSS variables, and plugins.</p>
-                </div>
-              </motion.div>
-            </div>
-          </div>
-        </section>
+
+        <BlogsPreview />
 
         <Certificates />
         <Contact />
