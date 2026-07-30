@@ -5,9 +5,11 @@ import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 
 export default function AllProjects() {
-  const [projects, setProjects] = useState([]);
+  const [projects, setProjects] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedProject, setSelectedProject] = useState<any>(null); // State for Modal
+  const [selectedProject, setSelectedProject] = useState<any>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 6;
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -38,6 +40,16 @@ export default function AllProjects() {
       document.body.style.overflow = "unset";
     };
   }, [selectedProject]);
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentProjects = projects.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(projects.length / itemsPerPage);
+
+  const paginate = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   return (
     <>
@@ -76,8 +88,9 @@ export default function AllProjects() {
             <p className="text-white/50">Check back later for updates.</p>
           </div>
         ) : (
+          <>
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
-            {projects.map((project: any, i: number) => (
+            {currentProjects.map((project: any, i: number) => (
               <motion.div
                 key={project._id || i}
                 initial={{ opacity: 0, y: 30 }}
@@ -123,6 +136,42 @@ export default function AllProjects() {
               </motion.div>
             ))}
           </div>
+
+          {/* Pagination UI */}
+          {totalPages > 1 && (
+            <div className="flex justify-center items-center mt-16 gap-2">
+              <button 
+                onClick={() => paginate(currentPage - 1)}
+                disabled={currentPage === 1}
+                className="px-4 py-2 rounded-xl border border-white/10 bg-white/5 disabled:opacity-50 hover:bg-[#00FF00]/20 hover:text-[#00FF00] hover:border-[#00FF00]/50 transition-all font-bold disabled:hover:bg-white/5 disabled:hover:text-white disabled:hover:border-white/10"
+              >
+                Prev
+              </button>
+              
+              {[...Array(totalPages)].map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => paginate(i + 1)}
+                  className={`w-10 h-10 flex items-center justify-center rounded-xl border font-bold transition-all ${
+                    currentPage === i + 1 
+                      ? "bg-[#00FF00] text-black border-[#00FF00]" 
+                      : "bg-white/5 border-white/10 text-white hover:border-[#00FF00]/50 hover:text-[#00FF00]"
+                  }`}
+                >
+                  {i + 1}
+                </button>
+              ))}
+              
+              <button 
+                onClick={() => paginate(currentPage + 1)}
+                disabled={currentPage === totalPages}
+                className="px-4 py-2 rounded-xl border border-white/10 bg-white/5 disabled:opacity-50 hover:bg-[#00FF00]/20 hover:text-[#00FF00] hover:border-[#00FF00]/50 transition-all font-bold disabled:hover:bg-white/5 disabled:hover:text-white disabled:hover:border-white/10"
+              >
+                Next
+              </button>
+            </div>
+          )}
+          </>
         )}
       </div>
 

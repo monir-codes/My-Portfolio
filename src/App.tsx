@@ -198,6 +198,7 @@ const Navbar = () => {
 
 const Hero = () => {
   const [hero, setHero] = useState<any>(null);
+  const navigate = useNavigate();
   useEffect(() => {
     fetch(`${import.meta.env.VITE_API_URL || "https://portfolio-server-ten-fawn.vercel.app"}/api/hero`)
       .then(r => r.json())
@@ -292,13 +293,10 @@ const Hero = () => {
                   boxShadow: "0 0 40px rgba(0,255,0,0.4)",
                 }}
                 whileTap={{ scale: 0.95 }}
-                onClick={() =>
-                  window.open(
-                    "https://github.com/monir-codes?tab=repositories",
-                    "_blank",
-                    "noopener,noreferrer",
-                  )
-                }
+                onClick={() => {
+                  navigate("/projects");
+                  window.scrollTo(0, 0);
+                }}
                 className="flex-1 px-10 py-4 bg-[#00FF00] text-black font-bold uppercase tracking-widest rounded-xl flex items-center justify-center gap-2 transition-shadow"
               >
                 View Projects
@@ -1066,11 +1064,20 @@ const Projects = () => {
 const BlogsPreview = () => {
   const navigate = useNavigate();
   const [apiBlogs, setApiBlogs] = useState<any[]>([]);
+  const scrollRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     fetch(`${import.meta.env.VITE_API_URL || "https://portfolio-server-ten-fawn.vercel.app"}/api/blogs`).then(r => r.json()).then(d => setApiBlogs(d));
   }, []);
   
-  const activeBlogs = apiBlogs.length > 0 ? apiBlogs.slice(0, 3) : [];
+  const activeBlogs = apiBlogs;
+
+  const scrollLeft = () => {
+    if (scrollRef.current) scrollRef.current.scrollBy({ left: -350, behavior: 'smooth' });
+  };
+  const scrollRight = () => {
+    if (scrollRef.current) scrollRef.current.scrollBy({ left: 350, behavior: 'smooth' });
+  };
 
   return (
     <section className="py-24 relative bg-[#0a0a0a]">
@@ -1094,8 +1101,28 @@ const BlogsPreview = () => {
             <p className="text-white/40">No articles published yet.</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {activeBlogs.map((blog, i) => (
+          <div className="relative group/scroll">
+            <button
+              onClick={scrollLeft}
+              className="absolute left-2 md:-left-8 top-1/2 -translate-y-1/2 z-20 p-2 md:p-3 bg-black/60 border border-white/20 rounded-full text-white backdrop-blur-md opacity-60 sm:opacity-0 group-hover/scroll:opacity-100 transition-opacity hover:bg-[#00FF00] hover:text-black hover:border-transparent shadow-xl"
+            >
+              <ChevronLeft className="w-5 h-5 md:w-6 md:h-6" />
+            </button>
+
+            <button
+              onClick={scrollRight}
+              className="absolute right-2 md:-right-8 top-1/2 -translate-y-1/2 z-20 p-2 md:p-3 bg-black/60 border border-white/20 rounded-full text-white backdrop-blur-md opacity-60 sm:opacity-0 group-hover/scroll:opacity-100 transition-opacity hover:bg-[#00FF00] hover:text-black hover:border-transparent shadow-xl"
+            >
+              <ChevronRight className="w-5 h-5 md:w-6 md:h-6" />
+            </button>
+
+            <div
+              ref={scrollRef}
+              className="flex overflow-x-auto gap-6 pb-12 snap-x snap-mandatory hide-scrollbar relative z-10"
+              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+            >
+              {activeBlogs.map((blog, i) => (
+                <div key={blog._id} className="snap-center shrink-0 w-[85vw] sm:w-[350px] lg:w-[400px]">
               <motion.div
                 key={blog._id}
                 initial={{ opacity: 0, y: 30 }}
@@ -1125,7 +1152,9 @@ const BlogsPreview = () => {
                   </div>
                 </div>
               </motion.div>
+              </div>
             ))}
+          </div>
           </div>
         )}
       </div>
@@ -1135,11 +1164,11 @@ const BlogsPreview = () => {
 
 const Certificates = () => {
   const [apiCerts, setApiCerts] = useState<any[]>([]);
+  const scrollRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     fetch(`${import.meta.env.VITE_API_URL || "https://portfolio-server-ten-fawn.vercel.app"}/api/certificates`).then(r => r.json()).then(d => setApiCerts(d));
   }, []);
   const activeCerts = apiCerts.length > 0 ? apiCerts : [
-
     {
       title: "Complete Web Development Course",
       issuer: "Programming Hero",
@@ -1148,25 +1177,53 @@ const Certificates = () => {
     }
   ];
 
+  const scrollLeft = () => {
+    if (scrollRef.current) scrollRef.current.scrollBy({ left: -350, behavior: 'smooth' });
+  };
+  const scrollRight = () => {
+    if (scrollRef.current) scrollRef.current.scrollBy({ left: 350, behavior: 'smooth' });
+  };
+
   return (
     <section id="certificates" className="py-24 md:py-16 md:min-h-screen md:flex md:items-center relative overflow-hidden">
       <div className="container mx-auto px-8 md:px-10 lg:px-24 xl:px-32 w-full">
-        <div className="text-center mb-10 lg:mb-12">
-          <h2 className="text-4xl md:text-4xl lg:text-4xl xl:text-5xl font-bold mb-3 lg:mb-4">Certifications</h2>
-          <p className="text-white/50 max-w-2xl mx-auto lg:text-sm xl:text-base">
-            Professional achievements and continuous learning milestones.
-          </p>
+        <div className="flex flex-col md:flex-row justify-between items-end mb-10 lg:mb-12 gap-6">
+          <div>
+            <h2 className="text-4xl md:text-4xl lg:text-4xl xl:text-5xl font-bold mb-3 lg:mb-4 tracking-tight">Certifications</h2>
+            <p className="text-white/50 max-w-xl lg:text-sm xl:text-base">
+              Professional achievements and continuous learning milestones.
+            </p>
+          </div>
         </div>
 
-        <div className={activeCerts.length === 1 ? "max-w-xl mx-auto" : "grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-6 xl:gap-8 max-w-5xl mx-auto"}>
+        <div className="relative group/scroll">
+          <button
+            onClick={scrollLeft}
+            className="absolute left-2 md:-left-8 top-1/2 -translate-y-1/2 z-20 p-2 md:p-3 bg-black/60 border border-white/20 rounded-full text-white backdrop-blur-md opacity-60 sm:opacity-0 group-hover/scroll:opacity-100 transition-opacity hover:bg-[#00FF00] hover:text-black hover:border-transparent shadow-xl"
+          >
+            <ChevronLeft className="w-5 h-5 md:w-6 md:h-6" />
+          </button>
+
+          <button
+            onClick={scrollRight}
+            className="absolute right-2 md:-right-8 top-1/2 -translate-y-1/2 z-20 p-2 md:p-3 bg-black/60 border border-white/20 rounded-full text-white backdrop-blur-md opacity-60 sm:opacity-0 group-hover/scroll:opacity-100 transition-opacity hover:bg-[#00FF00] hover:text-black hover:border-transparent shadow-xl"
+          >
+            <ChevronRight className="w-5 h-5 md:w-6 md:h-6" />
+          </button>
+
+          <div
+            ref={scrollRef}
+            className="flex overflow-x-auto gap-6 pb-12 snap-x snap-mandatory hide-scrollbar relative z-10"
+            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          >
           {activeCerts.map((cert, i) => (
+            <div key={i} className="snap-center shrink-0 w-[85vw] sm:w-[400px] lg:w-[450px]">
             <motion.div
-              key={i}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.2 }}
-              className="group relative bg-white/5 backdrop-blur-md rounded-3xl overflow-hidden border border-white/10 hover:border-[#00FF00]/40 transition-all hover:shadow-lg hover:shadow-[#00FF00]/10"
+              className="group relative bg-white/5 backdrop-blur-md rounded-3xl overflow-hidden border border-white/10 hover:border-[#00FF00]/40 transition-all hover:shadow-lg hover:shadow-[#00FF00]/10 h-full flex flex-col"
             >
               <div className="absolute inset-0 bg-gradient-to-br from-[#00FF00]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
@@ -1196,7 +1253,9 @@ const Certificates = () => {
                 </div>
               </div>
             </motion.div>
+            </div>
           ))}
+        </div>
         </div>
       </div>
     </section>

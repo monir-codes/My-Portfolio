@@ -9,6 +9,8 @@ export default function AllBlogs() {
   const [blogs, setBlogs] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedBlog, setSelectedBlog] = useState<any | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 6;
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -32,6 +34,16 @@ export default function AllBlogs() {
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentBlogs = blogs.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(blogs.length / itemsPerPage);
+
+  const paginate = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   return (
     <>
@@ -133,8 +145,9 @@ export default function AllBlogs() {
                <p className="text-white/50">Check back later for exciting tech content.</p>
             </div>
           ) : (
+            <>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {blogs.map((blog, i) => (
+              {currentBlogs.map((blog, i) => (
                 <motion.article
                   key={blog._id || i}
                   initial={{ opacity: 0, y: 30 }}
@@ -184,6 +197,42 @@ export default function AllBlogs() {
                 </motion.article>
               ))}
             </div>
+
+            {/* Pagination UI */}
+            {totalPages > 1 && (
+              <div className="flex justify-center items-center mt-16 gap-2">
+                <button 
+                  onClick={() => paginate(currentPage - 1)}
+                  disabled={currentPage === 1}
+                  className="px-4 py-2 rounded-xl border border-white/10 bg-white/5 disabled:opacity-50 hover:bg-[#00FF00]/20 hover:text-[#00FF00] hover:border-[#00FF00]/50 transition-all font-bold disabled:hover:bg-white/5 disabled:hover:text-white disabled:hover:border-white/10"
+                >
+                  Prev
+                </button>
+                
+                {[...Array(totalPages)].map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => paginate(i + 1)}
+                    className={`w-10 h-10 flex items-center justify-center rounded-xl border font-bold transition-all ${
+                      currentPage === i + 1 
+                        ? "bg-[#00FF00] text-black border-[#00FF00]" 
+                        : "bg-white/5 border-white/10 text-white hover:border-[#00FF00]/50 hover:text-[#00FF00]"
+                    }`}
+                  >
+                    {i + 1}
+                  </button>
+                ))}
+                
+                <button 
+                  onClick={() => paginate(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                  className="px-4 py-2 rounded-xl border border-white/10 bg-white/5 disabled:opacity-50 hover:bg-[#00FF00]/20 hover:text-[#00FF00] hover:border-[#00FF00]/50 transition-all font-bold disabled:hover:bg-white/5 disabled:hover:text-white disabled:hover:border-white/10"
+                >
+                  Next
+                </button>
+              </div>
+            )}
+            </>
           )}
 
         </div>
